@@ -22,12 +22,12 @@ class Consonant(Enum):
         if not name:
             return None
         try:
-            return getattr(cls, name)
-        except AttributeError:
+            return cls[name]
+        except KeyError:
             for family in cls:
                 if name in family.__members__:
                     return family._member_map_[name]
-        raise AttributeError
+        raise KeyError
 
     @classmethod
     def all(cls):

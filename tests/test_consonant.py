@@ -18,7 +18,7 @@ CONSONANT_FAMILIES = {
 )
 def consonant_cases(request):
     family, x = request.param
-    return pytest.param(getattr(Consonant, family), x)
+    return pytest.param(Consonant[family], x)
 
 
 def test_hasattr(consonant_cases):
@@ -28,7 +28,7 @@ def test_hasattr(consonant_cases):
 
 def test_get(consonant_cases):
     family, x = consonant_cases.values
-    assert Consonant.get(x) == getattr(family, x)
+    assert Consonant.get(x) == family[x]
 
 
 def test_all():
