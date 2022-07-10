@@ -168,3 +168,38 @@ def test_similar_traditional(original, others):
 )
 def test_similar_sounding(original, others):
     assert Vowel[original].similar_sounding() == others
+
+
+@pytest.mark.parametrize(
+    'original, others', [
+        ('e', {Vowel.e}),
+        ('a', {
+            Vowel.a,
+            Vowel.ai,
+            Vowel.ao,
+            Vowel.an,
+            Vowel.ya,
+            Vowel.wa,
+        }),
+        ('ei', {Vowel.ei, Vowel.wei}),
+        ('ai', {Vowel.ai, Vowel.wai}),
+        ('ou', {Vowel.ou, Vowel.you}),
+        ('ao', {Vowel.ao, Vowel.yao}),
+        ('en', {Vowel.en, Vowel.eng, Vowel.wen}),
+        ('an', {
+            Vowel.an,
+            Vowel.ang,
+            Vowel.yan,
+            Vowel.wan,
+            Vowel.yuan
+        }),
+        ('eng', {Vowel.eng, Vowel.weng}),
+        ('ang', {Vowel.ang, Vowel.yang, Vowel.wang}),
+        ('yi', {Vowel.yi, Vowel.ye, Vowel.ya, Vowel.yin}),
+        ('ya', {Vowel.ya, Vowel.yao, Vowel.yan}),
+        ('wu', {Vowel.wu, Vowel.wo, Vowel.wa}),
+        ('yu', {Vowel.yu, Vowel.yue, Vowel.yun})
+    ]
+)
+def test_similar_additive(original, others):
+    assert Vowel[original].similar_additive() == others

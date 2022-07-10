@@ -134,3 +134,27 @@ class Vowel(Enum):
             x.nucleus in similar and
             x.coda == self.coda
         )}
+
+    def similar_additive(self):
+        cls = self.__class__
+        return {x for x in cls if (
+            x == self or
+            (
+                x.nucleus == self.nucleus and
+                (
+                    (
+                        self.medial in x.medial and
+                        len(x.medial) - len(self.medial) == 1 and
+                        x.coda == self.coda
+                    )
+                    or
+                    (
+                        self.coda in x.coda and
+                        len(x.coda) - len(self.coda) == 1 and
+                        x.medial == self.medial
+                    )
+                )
+            ) or (
+                x.medial == self.nucleus and not x.coda
+            )
+        )}
