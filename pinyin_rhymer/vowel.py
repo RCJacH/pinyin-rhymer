@@ -111,3 +111,9 @@ class Vowel(Enum):
     @property
     def without_consonant(self):
         return 'yi' if self.spell == 'i' else self.name
+
+    def similar_traditional(self):
+        cls = self.__class__
+        return {x for x in cls if (
+            x.nucleus == self.nucleus and x.coda == self.coda
+        )}

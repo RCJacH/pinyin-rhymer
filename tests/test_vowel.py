@@ -81,6 +81,7 @@ def test_parse(pinyin, name):
 def test_with_consonant(name, pinyin):
     assert Vowel[name].with_consonant == pinyin
 
+
 @pytest.mark.parametrize(
     'name, pinyin', [
         ('e', 'e'),
@@ -113,3 +114,21 @@ def test_with_consonant(name, pinyin):
 )
 def test_without_consonant(name, pinyin):
     assert Vowel[name].without_consonant == pinyin
+
+
+@pytest.mark.parametrize(
+    'original, others', [
+        ('e', {Vowel.e}),
+        ('a', {Vowel.a, Vowel.ya, Vowel.wa}),
+        ('ei', {Vowel.ei, Vowel.wei}),
+        ('ai', {Vowel.ai, Vowel.wai}),
+        ('ou', {Vowel.ou, Vowel.you}),
+        ('ao', {Vowel.ao, Vowel.yao}),
+        ('en', {Vowel.en, Vowel.wen}),
+        ('an', {Vowel.an, Vowel.yan, Vowel.wan, Vowel.yuan}),
+        ('eng', {Vowel.eng, Vowel.weng}),
+        ('ang', {Vowel.ang, Vowel.yang, Vowel.wang}),
+    ]
+)
+def test_similar_traditional(original, others):
+    assert Vowel[original].similar_traditional() == others
