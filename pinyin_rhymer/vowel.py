@@ -18,6 +18,7 @@ VOWEL_TRANSLATION = {
     'ui': 'wei',
     'uai': 'wai',
     'uan': 'wan',
+    'un': 'wen',
     'uang': 'wang',
     'v': 'yu',
     've': 'yue',
@@ -79,7 +80,7 @@ class Vowel(Enum):
     wai = ('uai', 'u', 'a', 'i')
     wen = ('un', '', 'u', 'n')
     wan = ('uan', 'u', 'a', 'n')
-    weng = ('ueng', 'u', 'e', 'ng')
+    weng = ('weng', 'u', 'e', 'ng')
     wang = ('uang', 'u', 'a', 'ng')
     yu = ('v', '', 'v', '')
     yue = ('ve', 'v', 'e', '')
@@ -101,3 +102,11 @@ class Vowel(Enum):
         if s in VOWEL_TRANSLATION:
             s = VOWEL_TRANSLATION[s]
         return Vowel[s]
+
+    @property
+    def with_consonant(self):
+        return self.spell
+
+    @property
+    def without_consonant(self):
+        return 'yi' if self.spell == 'i' else self.name
