@@ -32,7 +32,7 @@ class Monophthong(Enum):
     v = (0.1, 0.2)
     u = (0.1, 0.9)
     i = (0.2, 0.1)
-    r = (0.2, 0.7)
+    r = (0.22, 0.7)
     ɚ = (0.4, 0.9)
     e = (0.4, 0.6)
     ɤ = (0.5, 0.8)
@@ -43,11 +43,15 @@ class Monophthong(Enum):
         self.openness = openness
         self.backness = backness
 
+    @classmethod
+    def _missing_(cls, name):
+        return cls[name]
+
     def similar(self, threshold=0.3):
-        return [name for name in self.__class__ if (
-            abs(name.backness - self.backness) < 0.3 and
-            abs(name.openness - self.openness) < 0.3
-        )]
+        return {name for name in self.__class__ if (
+            (abs(name.backness - self.backness) < threshold) and
+            (abs(name.openness - self.openness) < threshold)
+        )}
 
 
 class Vowel(Enum):
@@ -115,5 +119,18 @@ class Vowel(Enum):
     def similar_traditional(self):
         cls = self.__class__
         return {x for x in cls if (
-            x.nucleus == self.nucleus and x.coda == self.coda
+            x.nucleus == self.nucleus and (
+                self.coda in ('n', 'ng') and x.coda in ('n', 'ng') or
+                x.coda == self.coda
+            )
+        )}
+
+    def similar_sounding(self):
+        cls = self.__class__
+        monophthong = Monophthong(self.nucleus)
+        similar = {x.name for x in monophthong.similar()}
+        return {x for x in cls if (
+            x.medial == self.medial and
+            x.nucleus in similar and
+            x.coda == self.coda
         )}

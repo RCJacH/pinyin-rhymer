@@ -124,11 +124,47 @@ def test_without_consonant(name, pinyin):
         ('ai', {Vowel.ai, Vowel.wai}),
         ('ou', {Vowel.ou, Vowel.you}),
         ('ao', {Vowel.ao, Vowel.yao}),
-        ('en', {Vowel.en, Vowel.wen}),
-        ('an', {Vowel.an, Vowel.yan, Vowel.wan, Vowel.yuan}),
-        ('eng', {Vowel.eng, Vowel.weng}),
-        ('ang', {Vowel.ang, Vowel.yang, Vowel.wang}),
+        ('en', {Vowel.en, Vowel.wen, Vowel.eng, Vowel.weng}),
+        ('an', {
+            Vowel.an,
+            Vowel.yan,
+            Vowel.wan,
+            Vowel.yuan,
+            Vowel.ang,
+            Vowel.yang,
+            Vowel.wang
+        }),
+        ('eng', {Vowel.eng, Vowel.weng, Vowel.en, Vowel.wen}),
+        ('ang', {
+            Vowel.ang,
+            Vowel.yang,
+            Vowel.wang,
+            Vowel.an,
+            Vowel.yan,
+            Vowel.wan,
+            Vowel.yuan
+        }),
+        ('ye', {Vowel.ye, Vowel.yue}),
     ]
 )
 def test_similar_traditional(original, others):
     assert Vowel[original].similar_traditional() == others
+
+
+@pytest.mark.parametrize(
+    'original, others', [
+        ('e', {Vowel.e, Vowel.r, Vowel.er}),
+        ('a', {Vowel.a}),
+        ('ei', {Vowel.ei}),
+        ('ai', {Vowel.ai}),
+        ('ou', {Vowel.ou, Vowel.ao}),
+        ('ao', {Vowel.ao, Vowel.ou}),
+        ('en', {Vowel.en}),
+        ('an', {Vowel.an}),
+        ('eng', {Vowel.eng}),
+        ('ang', {Vowel.ang}),
+        ('you', {Vowel.you, Vowel.yao}),
+    ]
+)
+def test_similar_sounding(original, others):
+    assert Vowel[original].similar_sounding() == others
