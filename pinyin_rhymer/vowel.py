@@ -158,3 +158,29 @@ class Vowel(Enum):
                 x.medial == self.nucleus and not x.coda
             )
         )}
+
+    def similar_subtractive(self):
+        cls = self.__class__
+        return {x for x in cls if (
+            x == self or
+            (
+                x.nucleus == self.nucleus and
+                (
+                    (
+                        x.medial in self.medial and
+                        len(self.medial) - len(x.medial) == 1 and
+                        x.coda == self.coda
+                    )
+                    or
+                    (
+                        x.coda in self.coda and
+                        len(self.coda) - len(x.coda) == 1 and
+                        x.medial == self.medial
+                    )
+                )
+            ) or (
+                not self.coda and
+                self.medial == x.nucleus and
+                not x.medial and not x.coda
+            )
+        )}

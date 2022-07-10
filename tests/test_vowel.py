@@ -203,3 +203,37 @@ def test_similar_sounding(original, others):
 )
 def test_similar_additive(original, others):
     assert Vowel[original].similar_additive() == others
+
+
+@pytest.mark.parametrize(
+    'original, others', [
+        ('e', {Vowel.e}),
+        ('a', {Vowel.a}),
+        ('ei', {Vowel.ei}),
+        ('ai', {Vowel.ai, Vowel.a}),
+        ('ou', {Vowel.ou}),
+        ('ao', {Vowel.ao, Vowel.a}),
+        ('en', {Vowel.en}),
+        ('an', {Vowel.an, Vowel.a}),
+        ('eng', {Vowel.eng, Vowel.en}),
+        ('ang', {Vowel.ang, Vowel.an}),
+        ('yi', {Vowel.yi}),
+        ('ye', {Vowel.ye, Vowel.yi}),
+        ('ya', {Vowel.ya, Vowel.yi, Vowel.a}),
+        ('you', {Vowel.you, Vowel.ou}),
+        ('yao', {Vowel.yao, Vowel.ya, Vowel.ao}),
+        ('ying', {Vowel.ying, Vowel.yin}),
+        ('yang', {Vowel.yang, Vowel.yan, Vowel.ang}),
+        ('wo', {Vowel.wo, Vowel.wu}),
+        ('wa', {Vowel.wa, Vowel.wu, Vowel.a}),
+        ('wei', {Vowel.wei, Vowel.ei}),
+        ('wai', {Vowel.wai, Vowel.wa, Vowel.ai}),
+        ('weng', {Vowel.weng, Vowel.wen, Vowel.eng}),
+        ('wang', {Vowel.wang, Vowel.wan, Vowel.ang}),
+        ('yue', {Vowel.yue, Vowel.yu}),
+        ('yun', {Vowel.yun, Vowel.yu}),
+        ('yuan', {Vowel.yuan, Vowel.an}),
+    ]
+)
+def test_similar_subtractive(original, others):
+    assert Vowel[original].similar_subtractive() == others
