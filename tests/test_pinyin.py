@@ -17,7 +17,7 @@ class PinyinCase(Enum):
     nv3 = ('nǚ', 'n', 'yu', 'v', '', 'v', '', 3)
     liu2 = ('líu', 'l', 'you', 'iu', 'i', 'o', 'u', 2)
     gang4 = ('gàng', 'g', 'ang', 'ang', '', 'a', 'ng', 4)
-    ke3 = ('kě', 'k', 'e', 'e', '', 'e', '', 3)
+    ke3 = ('kě', 'k', 'e', 'e', '', 'ɤ', '', 3)
     hui2 = ('húi', 'h', 'wei', 'ui', 'u', 'e', 'i', 2)
     jue1 = ('jūe', 'j', 'yue', 've', 'v', 'e', '', 1)
     qu4 = ('qù', 'q', 'yu', 'v', '', 'v', '', 4)

@@ -34,7 +34,8 @@ class Monophthong(Enum):
     i = (0.2, 0.1)
     r = (0.2, 0.7)
     ɚ = (0.4, 0.9)
-    e = (0.5, 0.6)
+    e = (0.4, 0.6)
+    ɤ = (0.5, 0.8)
     o = (0.6, 0.8)
     a = (0.8, 0.64)
 
@@ -42,15 +43,15 @@ class Monophthong(Enum):
         self.openness = openness
         self.backness = backness
 
-    def similar(self):
+    def similar(self, threshold=0.3):
         return [name for name in self.__class__ if (
-            abs(name.backness - self.backness) <= 0.3 and
-            abs(name.openness - self.openness) <= 0.3
+            abs(name.backness - self.backness) < 0.3 and
+            abs(name.openness - self.openness) < 0.3
         )]
 
 
 class Vowel(Enum):
-    e = ('e', '', 'e', '')
+    e = ('e', '', 'ɤ', '')
     a = ('a', '', 'a', '')
     ei = ('ei', '', 'e', 'i')
     ai = ('ai', '', 'a', 'i')
@@ -78,7 +79,7 @@ class Vowel(Enum):
     wa = ('ua', 'u', 'a', '')
     wei = ('ui', 'u', 'e', 'i')
     wai = ('uai', 'u', 'a', 'i')
-    wen = ('un', '', 'u', 'n')
+    wen = ('un', 'u', 'e', 'n')
     wan = ('uan', 'u', 'a', 'n')
     weng = ('weng', 'u', 'e', 'ng')
     wang = ('uang', 'u', 'a', 'ng')
