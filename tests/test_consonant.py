@@ -24,3 +24,8 @@ def consonant_cases(request):
 def test_hasattr(consonant_cases):
     family, x = consonant_cases.values
     assert hasattr(family, x)
+
+
+def test_get(consonant_cases):
+    family, x = consonant_cases.values
+    assert Consonant.get(x) == getattr(family, x)

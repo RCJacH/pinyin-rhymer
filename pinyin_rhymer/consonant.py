@@ -16,3 +16,15 @@ class Consonant(Enum):
 
     def __new__(cls, name, value, *args):
         return Enum(name, value, type=ConsonantFamily)
+
+    @classmethod
+    def get(cls, name):
+        if not name:
+            return None
+        try:
+            return getattr(cls, name)
+        except AttributeError:
+            for family in cls:
+                if name in family.__members__:
+                    return family._member_map_[name]
+        raise AttributeError
