@@ -28,3 +28,7 @@ class Consonant(Enum):
                 if name in family.__members__:
                     return family._member_map_[name]
         raise AttributeError
+
+    @classmethod
+    def all(cls):
+        return {x.name for family in cls for x in family}

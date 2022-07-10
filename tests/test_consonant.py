@@ -29,3 +29,11 @@ def test_hasattr(consonant_cases):
 def test_get(consonant_cases):
     family, x = consonant_cases.values
     assert Consonant.get(x) == getattr(family, x)
+
+
+def test_all():
+    all_consonants = {
+        x for family in CONSONANT_FAMILIES.values() for x in family
+    }
+    assert Consonant.all() == all_consonants
+    assert len(Consonant.all()) == 21
