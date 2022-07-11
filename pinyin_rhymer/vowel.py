@@ -1,5 +1,7 @@
 from enum import Enum
 
+from pinyin_rhymer.rhyme_scheme import RhymeScheme
+
 VOWEL_TRANSLATION = {
     'i': 'yi',
     'ie': 'ye',
@@ -115,6 +117,19 @@ class Vowel(Enum):
     @property
     def without_consonant(self):
         return 'yi' if self.spell == 'i' else self.name
+
+    def rhyme(self, rhymescheme, *args):
+        if not isinstance(rhymescheme, RhymeScheme):
+            rhymescheme = RhymeScheme(rhymescheme)
+        match rhymescheme:
+            case RhymeScheme.TRADITIONAL:
+                return self.similar_traditional(*args)
+            case RhymeScheme.SIMILAR_SOUNDING:
+                return self.similar_sounding(*args)
+            case RhymeScheme.ADDTIIVE:
+                return self.similar_additive(*args)
+            case RhymeScheme.SUBTRACTIVE:
+                return self.similar_subtractive(*args)
 
     def similar_traditional(self):
         cls = self.__class__
