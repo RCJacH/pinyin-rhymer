@@ -53,6 +53,7 @@ def reverse_transform_vowel(consonant, vowel):
         return vowel.replace('v', 'u')
     return vowel
 
+
 class PinYin(object):
     def __init__(self, pinyin):
         if not pinyin.isascii():
@@ -87,7 +88,11 @@ class PinYin(object):
             consonants = ConsonantScheme(consonants)
         except ValueError:
             # 'bpmf'
-            return (Consonant.get(x) for x in consonants)
+            return (
+                Consonant.get(
+                    x.replace('Z', 'zh').replace('C', 'ch').replace('S', 'sh')
+                ) for x in consonants
+            )
         except TypeError:
             # ('b', 'p', 'm', 'f') or ('FAMILY', 'b', 'p', 'm', 'f')
             return itertools.chain.from_iterable(
@@ -104,7 +109,7 @@ class PinYin(object):
         try:
             vowels = VowelScheme(vowels)
         except ValueError:
-            return (Vowel(x) for x in vowels)
+            return (Vowel(x) for x in re.split(r'[\s\t,]+', vowels))
         except TypeError:
             return itertools.chain.from_iterable(
                 self._get_vowel_list(x) for x in vowels
