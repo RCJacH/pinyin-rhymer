@@ -35,5 +35,6 @@ def test_all():
     all_consonants = {
         x for family in CONSONANT_FAMILIES.values() for x in family
     }
+    all_consonants.add('')
     assert Consonant.all() == all_consonants
-    assert len(Consonant.all()) == 21
+    assert len(Consonant.all()) == 22

@@ -31,4 +31,6 @@ class Consonant(Enum):
 
     @classmethod
     def all(cls):
-        return {x.name for family in cls for x in family}
+        all = {x.name for family in cls for x in family}
+        all.add('')
+        return all
