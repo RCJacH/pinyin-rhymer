@@ -3,7 +3,7 @@ import re
 
 from pinyin_rhymer.consonant import Consonant
 from pinyin_rhymer.data.pinyin_list import PINYIN_LIST
-from pinyin_rhymer.rhyme_scheme import RhymeScheme
+from pinyin_rhymer.rhyme_scheme import ConsonantScheme, VowelScheme
 from pinyin_rhymer.vowel import Vowel
 
 TONES = 'āēīōūǖáéíóúǘǎěǐǒǔǚàèìòùǜ'
@@ -84,7 +84,7 @@ class PinYin(object):
 
     def _get_consonant_list(self, consonants):
         try:
-            consonants = RhymeScheme[consonants]
+            consonants = ConsonantScheme(consonants)
         except ValueError:
             # 'bpmf'
             return (Consonant.get(x) for x in consonants)
@@ -95,14 +95,14 @@ class PinYin(object):
             )
         else:
             match consonants:
-                case RhymeScheme.ALL_CONSONANTS:
+                case ConsonantScheme.ALL:
                     return Consonant.all()
-                case RhymeScheme.FAMILY:
+                case ConsonantScheme.FAMILY:
                     return self.consonant.family()
 
     def _get_vowel_list(self, vowels):
         try:
-            vowels = RhymeScheme[vowels]
+            vowels = VowelScheme(vowels)
         except ValueError:
             return (Vowel(x) for x in vowels)
         except TypeError:
@@ -111,13 +111,13 @@ class PinYin(object):
             )
         else:
             match vowels:
-                case RhymeScheme.TRADITIONAL:
+                case VowelScheme.TRADITIONAL:
                     return self.vowel.similar_traditional()
-                case RhymeScheme.SIMILAR_SOUNDING:
+                case VowelScheme.SIMILAR_SOUNDING:
                     return self.vowel.similar_sounding()
-                case RhymeScheme.ADDTIIVE:
+                case VowelScheme.ADDTIIVE:
                     return self.vowel.similar_additive()
-                case RhymeScheme.SUBTRACTIVE:
+                case VowelScheme.SUBTRACTIVE:
                     return self.vowel.similar_subtractive()
 
     def _get_tone_list(self, tones):

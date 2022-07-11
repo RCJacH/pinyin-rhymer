@@ -97,7 +97,7 @@ def test_parse(pinyin_case):
             'xiang1',
             'xuan1',
         }),
-        ('zhe5', 'ALL_CONSONANTS', 'TRADITIONAL', '5', {
+        ('zhe5', 'ALL', 'TRADITIONAL', '5', {
             'e5',
             'de5',
             'ke5',
