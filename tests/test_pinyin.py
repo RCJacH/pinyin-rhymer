@@ -75,3 +75,42 @@ def test_parse(pinyin_case):
     assert pinyin.vowel.nucleus == case.nucleus
     assert pinyin.vowel.coda == case.coda
     assert pinyin.tone == case.tone
+
+
+@pytest.mark.parametrize(
+    'pinyin, consonants, vowels, tones, expect', [
+        ('shuang1', 'FAMILY', 'TRADITIONAL', '1', {
+            'fan1',
+            'fang1',
+            'han1',
+            'hang1',
+            'huan1',
+            'huang1',
+            'san1',
+            'sang1',
+            'shan1',
+            'shang1',
+            'shuan1',
+            'shuang1',
+            'suan1',
+            'xian1',
+            'xiang1',
+            'xuan1',
+        }),
+        ('zhe5', 'ALL_CONSONANTS', 'TRADITIONAL', '5', {
+            'e5',
+            'de5',
+            'ke5',
+            'le5',
+            'me5',
+            'ne5',
+            'te5',
+            'ze5',
+            'zhe5',
+        })
+    ]
+)
+def test_rhyme(pinyin, consonants, vowels, tones, expect):
+    pinyin = PinYin(pinyin)
+    result = set(pinyin.generate_rhymes(consonants, vowels, tones))
+    assert result == expect

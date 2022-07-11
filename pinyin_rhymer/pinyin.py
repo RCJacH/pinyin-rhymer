@@ -1,6 +1,9 @@
+import itertools
 import re
 
 from pinyin_rhymer.consonant import Consonant
+from pinyin_rhymer.data.pinyin_list import PINYIN_LIST
+from pinyin_rhymer.rhyme_scheme import RhymeScheme
 from pinyin_rhymer.vowel import Vowel
 
 TONES = 'āēīōūǖáéíóúǘǎěǐǒǔǚàèìòùǜ'
@@ -41,6 +44,15 @@ def transform_vowel(consonant, vowel):
     return vowel
 
 
+def reverse_transform_vowel(consonant, vowel):
+    match vowel:
+        case 'uo':
+            if consonant in BPMF:
+                return 'o'
+    if consonant and consonant in JQX:
+        return vowel.replace('v', 'u')
+    return vowel
+
 class PinYin(object):
     def __init__(self, pinyin):
         if not pinyin.isascii():
@@ -52,3 +64,63 @@ class PinYin(object):
         self.consonant = Consonant.get(consonant)
         self.vowel = Vowel(vowel)
         self.tone = int(groups.group(3) or 5)
+
+    def generate_rhymes(self, consonants, vowels, tones):
+        consonants = self._get_consonant_list(consonants)
+        vowels = self._get_vowel_list(vowels)
+        tones = self._get_tone_list(tones)
+        pinyin_list = PINYIN_LIST.get_pinyin()
+        for consonant in consonants:
+            for vowel in vowels:
+                for tone in tones:
+                    vowel = (
+                        vowel.with_consonant if consonant
+                        else vowel.without_consonant
+                    )
+                    vowel = reverse_transform_vowel(consonant, vowel)
+                    pinyin = f'{consonant}{vowel}{tone}'
+                    if pinyin in pinyin_list:
+                        yield pinyin
+
+    def _get_consonant_list(self, consonants):
+        try:
+            consonants = RhymeScheme[consonants]
+        except ValueError:
+            # 'bpmf'
+            return (Consonant.get(x) for x in consonants)
+        except TypeError:
+            # ('b', 'p', 'm', 'f') or ('FAMILY', 'b', 'p', 'm', 'f')
+            return itertools.chain.from_iterable(
+                self._get_consonant_list(x) for x in consonants
+            )
+        else:
+            match consonants:
+                case RhymeScheme.ALL_CONSONANTS:
+                    return Consonant.all()
+                case RhymeScheme.FAMILY:
+                    return self.consonant.family()
+
+    def _get_vowel_list(self, vowels):
+        try:
+            vowels = RhymeScheme[vowels]
+        except ValueError:
+            return (Vowel(x) for x in vowels)
+        except TypeError:
+            return itertools.chain.from_iterable(
+                self._get_vowel_list(x) for x in vowels
+            )
+        else:
+            match vowels:
+                case RhymeScheme.TRADITIONAL:
+                    return self.vowel.similar_traditional()
+                case RhymeScheme.SIMILAR_SOUNDING:
+                    return self.vowel.similar_sounding()
+                case RhymeScheme.ADDTIIVE:
+                    return self.vowel.similar_additive()
+                case RhymeScheme.SUBTRACTIVE:
+                    return self.vowel.similar_subtractive()
+
+    def _get_tone_list(self, tones):
+        if tones == 'ALL':
+            return range(1, 6)
+        return tones
