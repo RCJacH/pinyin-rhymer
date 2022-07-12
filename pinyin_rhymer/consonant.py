@@ -3,7 +3,24 @@ from enum import Enum
 from pinyin_rhymer.error import NotAConsonantError
 
 
-class ConsonantFamily(object):
+class Misc(Enum):
+    NO_CONSONANT = ('',)
+
+    def __new__(cls, spell):
+        value = len(cls.__members__) + 1
+        obj = object.__new__(cls)
+        obj._value_ = value
+        obj.spell = spell
+        return obj
+
+    def __str__(self):
+        return self.spell
+
+
+class ConsonantFamily(Enum):
+    def __str__(self):
+        return self.name
+
     def family(self):
         cls = self.__class__
         return cls._member_map_
@@ -22,7 +39,7 @@ class Consonant(Enum):
     @classmethod
     def get(cls, name):
         if not name:
-            return None
+            return Misc.NO_CONSONANT
         try:
             return cls[name]
         except KeyError:
@@ -37,6 +54,6 @@ class Consonant(Enum):
 
     @classmethod
     def all(cls):
-        all = {x.name for family in cls for x in family}
-        all.add('')
+        all = {x for family in cls for x in family}
+        all.add(Misc.NO_CONSONANT)
         return all
