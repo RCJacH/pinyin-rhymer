@@ -76,7 +76,7 @@ class PinYin(object):
         consonants = self._get_consonant_list(consonants)
         vowels = self._get_vowel_list(vowels)
         tones = self._get_tone_list(tones)
-        pinyin_list = PINYIN_LIST.get_pinyin()
+        pinyin_list = PINYIN_LIST
         for consonant in consonants:
             for vowel in vowels:
                 for tone in tones:
