@@ -13,7 +13,9 @@ ZCS = 'zcs'
 ZHCHSHR = ('zh', 'ch', 'sh', 'r')
 BPMF = 'bpmf'
 JQX = 'jqx'
-RE_PINYIN = re.compile(fr'^([{Consonant.all()}]*)([eaiouvngwy]+)(\d)?$')
+RE_PINYIN = re.compile(
+    fr'^([{"".join(x.name for x in Consonant.all())}]*)([eaiouvngwy]+)(\d)?$'
+)
 
 
 def convert_unicode_to_alnum(pinyin):
@@ -72,12 +74,36 @@ class PinYin(object):
         self.vowel = Vowel(vowel)
         self.tone = int(tone)
 
-    def __str__(self):
+    @property
+    def spell_vowel(self):
+        consonant = str(self.consonant)
         vowel = (
-            self.vowel.with_consonant if self.consonant
+            self.vowel.with_consonant if consonant
             else self.vowel.without_consonant
         )
-        return f'{self.consonant}{vowel}{self.tone}'
+        return reverse_transform_vowel(consonant, vowel)
+
+    def __str__(self):
+        return f'{self.consonant}{self.spell_vowel}{self.tone}'
+
+    def with_tone_mark(self):
+        vowel = self.spell_vowel
+        if len(vowel) == 1:
+            replace = vowel
+        elif 'a' in vowel:
+            replace = 'a'
+        elif 'e' in vowel:
+            replace = 'e'
+        elif 'o' in vowel:
+            replace = 'o'
+        elif 'n' in vowel:
+            replace = self.vowel.nucleus
+        else:
+            replace = vowel[1]
+        vowel = vowel.replace(
+            replace, REPLACE[REPLACE.index(replace) + (self.tone % 5)]
+        )
+        return f'{self.consonant}{vowel}'
 
     def generate_rhymes(self, consonants, vowels, tones):
         consonants = self._get_consonant_list(consonants)
@@ -87,6 +113,7 @@ class PinYin(object):
         for consonant in consonants:
             for vowel in vowels:
                 for tone in tones:
+                    consonant = str(consonant)
                     vowel = (
                         vowel.with_consonant if consonant
                         else vowel.without_consonant

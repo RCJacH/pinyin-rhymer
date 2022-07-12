@@ -16,11 +16,11 @@ class PinyinCase(Enum):
     dai4 = ('dài', 'd', 'ai', 'ai', '', 'a', 'i', 4)
     tu1 = ('tū', 't', 'wu', 'u', '', 'u', '', 1)
     nv3 = ('nǚ', 'n', 'yu', 'v', '', 'v', '', 3)
-    liu2 = ('líu', 'l', 'you', 'iu', 'i', 'o', 'u', 2)
+    liu2 = ('liú', 'l', 'you', 'iu', 'i', 'o', 'u', 2)
     gang4 = ('gàng', 'g', 'ang', 'ang', '', 'a', 'ng', 4)
     ke3 = ('kě', 'k', 'e', 'e', '', 'ɤ', '', 3)
-    hui2 = ('húi', 'h', 'wei', 'ui', 'u', 'e', 'i', 2)
-    jue1 = ('jūe', 'j', 'yue', 've', 'v', 'e', '', 1)
+    hui2 = ('huí', 'h', 'wei', 'ui', 'u', 'e', 'i', 2)
+    jue1 = ('juē', 'j', 'yue', 've', 'v', 'e', '', 1)
     qu4 = ('qù', 'q', 'yu', 'v', '', 'v', '', 4)
     xie2 = ('xié', 'x', 'ye', 'ie', 'i', 'e', '', 2)
     zhao1 = ('zhāo', 'zh', 'ao', 'ao', '', 'a', 'u', 1)
@@ -32,7 +32,7 @@ class PinyinCase(Enum):
     suo1 = ('suō', 's', 'wo', 'uo', 'u', 'o', '', 1)
     wu2 = ('wú', '', 'wu', 'u', '', 'u', '', 2)
     wo4 = ('wò', '', 'wo', 'uo', 'u', 'o', '', 4)
-    wei4 = ('weì', '', 'wei', 'ui', 'u', 'e', 'i', 4)
+    wei4 = ('wèi', '', 'wei', 'ui', 'u', 'e', 'i', 4)
     ye3 = ('yě', '', 'ye', 'ie', 'i', 'e', '', 3)
     yong1 = ('yōng', '', 'yong', 'iong', 'i', 'o', 'ng', 1)
     yi1 = ('yī', '', 'yi', 'i', '', 'i', '', 1)
@@ -76,6 +76,12 @@ def test_parse(pinyin_case):
     assert pinyin.vowel.nucleus == case.nucleus
     assert pinyin.vowel.coda == case.coda
     assert pinyin.tone == case.tone
+
+
+def test_with_tone_mark(pinyin_case):
+    case = pinyin_case
+    pinyin = PinYin(case.name)
+    assert pinyin.with_tone_mark() == case.unicode
 
 
 @pytest.mark.parametrize(
