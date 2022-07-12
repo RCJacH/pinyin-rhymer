@@ -1,6 +1,7 @@
 import pytest
 
 from pinyin_rhymer.consonant import Consonant
+from pinyin_rhymer.error import NotAConsonantError
 
 CONSONANT_FAMILIES = {
     'Plosive': 'p t k b d g'.split(),
@@ -38,3 +39,9 @@ def test_all():
     all_consonants.add('')
     assert Consonant.all() == all_consonants
     assert len(Consonant.all()) == 22
+
+
+def test_not_a_consonant_error():
+    with pytest.raises(NotAConsonantError) as excinfo:
+        Consonant.get('not a consonant')
+    assert 'not a consonant' in str(excinfo.value)

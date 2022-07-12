@@ -1,5 +1,7 @@
 from enum import Enum
 
+from pinyin_rhymer.error import NotAConsonantError
+
 
 class ConsonantFamily(object):
     def family(self):
@@ -27,7 +29,7 @@ class Consonant(Enum):
             for family in cls:
                 if name in family.__members__:
                     return family._member_map_[name]
-        raise KeyError
+        raise NotAConsonantError(name)
 
     @classmethod
     def all(cls):
