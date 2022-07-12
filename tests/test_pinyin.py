@@ -84,6 +84,12 @@ def test_with_tone_mark(pinyin_case):
     assert pinyin.with_tone_mark() == case.unicode
 
 
+def test_equal(pinyin_case):
+    pinyin = PinYin(pinyin_case.name)
+    assert hash(pinyin) == hash(pinyin_case.unicode)
+    assert pinyin == pinyin_case.name
+
+
 @pytest.mark.parametrize(
     'pinyin, consonants, vowels, tones, expect', [
         ('shuang1', 'FAMILY', 'TRADITIONAL', '1', {

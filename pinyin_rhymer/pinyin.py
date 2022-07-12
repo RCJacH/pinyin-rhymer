@@ -96,6 +96,12 @@ class PinYin(object):
     def __str__(self):
         return f'{self.consonant}{self.spell_vowel}{self.tone}'
 
+    def __hash__(self):
+        return hash(self.with_tone_mark())
+
+    def __eq__(self, other):
+        return str(self) == other or hash(self) == hash(other)
+
     def with_tone_mark(self):
         vowel = self.spell_vowel
         if len(vowel) == 1:
