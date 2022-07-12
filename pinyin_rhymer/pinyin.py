@@ -3,6 +3,7 @@ import re
 
 from pinyin_rhymer.consonant import Consonant
 from pinyin_rhymer.data.pinyin_list import PINYIN_LIST
+from pinyin_rhymer.error import NotAPinYinError
 from pinyin_rhymer.rhyme_scheme import ConsonantScheme, VowelScheme
 from pinyin_rhymer.vowel import Vowel
 
@@ -12,7 +13,7 @@ ZCS = 'zcs'
 ZHCHSHR = ('zh', 'ch', 'sh', 'r')
 BPMF = 'bpmf'
 JQX = 'jqx'
-RE_PINYIN = re.compile(fr'^([{Consonant.all()}]*)([eaiouvngwy]+)(\d)?')
+RE_PINYIN = re.compile(fr'^([{Consonant.all()}]*)([eaiouvngwy]+)(\d)?$')
 
 
 def convert_unicode_to_alnum(pinyin):
@@ -59,12 +60,17 @@ class PinYin(object):
         if not pinyin.isascii():
             pinyin = convert_unicode_to_alnum(pinyin)
         groups = RE_PINYIN.match(pinyin)
+        if not groups:
+            raise NotAPinYinError(pinyin)
+
         consonant = groups.group(1)
         vowel = groups.group(2)
         vowel = transform_vowel(consonant, vowel)
+        tone = groups.group(3) or 5
+
         self.consonant = Consonant.get(consonant)
         self.vowel = Vowel(vowel)
-        self.tone = int(groups.group(3) or 5)
+        self.tone = int(tone)
 
     def generate_rhymes(self, consonants, vowels, tones):
         consonants = self._get_consonant_list(consonants)

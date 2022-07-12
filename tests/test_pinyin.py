@@ -3,6 +3,7 @@ from enum import Enum
 import pytest
 
 from pinyin_rhymer.consonant import Consonant
+from pinyin_rhymer.error import NotAPinYinError
 from pinyin_rhymer.pinyin import PinYin
 
 
@@ -114,3 +115,9 @@ def test_rhyme(pinyin, consonants, vowels, tones, expect):
     pinyin = PinYin(pinyin)
     result = set(pinyin.generate_rhymes(consonants, vowels, tones))
     assert result == expect
+
+
+def test_not_a_pinyin_error():
+    with pytest.raises(NotAPinYinError) as excinfo:
+        PinYin('not a pinyin')
+    assert 'not a pinyin' in str(excinfo.value)
