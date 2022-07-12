@@ -57,3 +57,7 @@ class Consonant(Enum):
         all = {x for family in cls for x in family}
         all.add(Misc.NO_CONSONANT)
         return all
+
+    @classmethod
+    def all_as_str(cls):
+        return {str(x) for x in cls.all()}

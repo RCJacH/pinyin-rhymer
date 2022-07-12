@@ -14,7 +14,7 @@ ZHCHSHR = ('zh', 'ch', 'sh', 'r')
 BPMF = 'bpmf'
 JQX = 'jqx'
 RE_PINYIN = re.compile(
-    fr'^([{"".join(x.name for x in Consonant.all())}]*)([eaiouvngwy]+)(\d)?$'
+    fr'^([{"".join(Consonant.all_as_str())}]*)([eaiouvngwy]+)(\d)?$'
 )
 
 
@@ -58,7 +58,15 @@ def reverse_transform_vowel(consonant, vowel):
 
 
 class PinYin(object):
-    def __init__(self, pinyin):
+    def __init__(self, in_str, vowel=None, tone=1):
+        consonant = in_str
+        if not vowel:
+            consonant, vowel, tone = self._parse(in_str)
+        self.consonant = Consonant.get(consonant)
+        self.vowel = Vowel(vowel)
+        self.tone = int(tone)
+
+    def _parse(self, pinyin):
         if not pinyin.isascii():
             pinyin = convert_unicode_to_alnum(pinyin)
         groups = RE_PINYIN.match(pinyin)
@@ -70,9 +78,7 @@ class PinYin(object):
         vowel = transform_vowel(consonant, vowel)
         tone = groups.group(3) or 5
 
-        self.consonant = Consonant.get(consonant)
-        self.vowel = Vowel(vowel)
-        self.tone = int(tone)
+        return consonant, vowel, tone
 
     @property
     def spell_vowel(self):
@@ -82,6 +88,10 @@ class PinYin(object):
             else self.vowel.without_consonant
         )
         return reverse_transform_vowel(consonant, vowel)
+
+    @property
+    def is_valid(self):
+        return str(self) in PINYIN_LIST
 
     def __str__(self):
         return f'{self.consonant}{self.spell_vowel}{self.tone}'
@@ -109,18 +119,11 @@ class PinYin(object):
         consonants = self._get_consonant_list(consonants)
         vowels = self._get_vowel_list(vowels)
         tones = self._get_tone_list(tones)
-        pinyin_list = PINYIN_LIST
         for consonant in consonants:
             for vowel in vowels:
                 for tone in tones:
-                    consonant = str(consonant)
-                    vowel = (
-                        vowel.with_consonant if consonant
-                        else vowel.without_consonant
-                    )
-                    vowel = reverse_transform_vowel(consonant, vowel)
-                    pinyin = f'{consonant}{vowel}{tone}'
-                    if pinyin in pinyin_list:
+                    pinyin = PinYin(consonant, vowel, tone)
+                    if pinyin.is_valid:
                         yield pinyin
 
     def _get_consonant_list(self, consonants):
@@ -137,7 +140,7 @@ class PinYin(object):
         else:
             match consonants:
                 case ConsonantScheme.ALL:
-                    return Consonant.all()
+                    return Consonant.all_as_str()
                 case ConsonantScheme.FAMILY:
                     return self.consonant.family()
 

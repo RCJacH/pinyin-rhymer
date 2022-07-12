@@ -119,7 +119,7 @@ def test_with_tone_mark(pinyin_case):
 )
 def test_rhyme(pinyin, consonants, vowels, tones, expect):
     pinyin = PinYin(pinyin)
-    result = set(pinyin.generate_rhymes(consonants, vowels, tones))
+    result = set(map(str, pinyin.generate_rhymes(consonants, vowels, tones)))
     assert result == expect
 
 
