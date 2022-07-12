@@ -26,9 +26,13 @@ class Consonant(Enum):
         try:
             return cls[name]
         except KeyError:
+            # allowing each consonant to be written as a single alphabet
+            translated = (
+                name.replace('Z', 'zh').replace('C', 'ch').replace('S', 'sh')
+            )
             for family in cls:
-                if name in family.__members__:
-                    return family._member_map_[name]
+                if translated in family.__members__:
+                    return family._member_map_[translated]
         raise NotAConsonantError(name)
 
     @classmethod

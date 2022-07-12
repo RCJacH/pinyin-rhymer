@@ -94,11 +94,7 @@ class PinYin(object):
             consonants = ConsonantScheme(consonants)
         except ValueError:
             # 'bpmf'
-            return (
-                Consonant.get(
-                    x.replace('Z', 'zh').replace('C', 'ch').replace('S', 'sh')
-                ) for x in consonants
-            )
+            return (Consonant.get(x) for x in consonants)
         except TypeError:
             # ('b', 'p', 'm', 'f') or ('FAMILY', 'b', 'p', 'm', 'f')
             return itertools.chain.from_iterable(
