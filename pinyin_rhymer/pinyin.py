@@ -72,6 +72,13 @@ class PinYin(object):
         self.vowel = Vowel(vowel)
         self.tone = int(tone)
 
+    def __str__(self):
+        vowel = (
+            self.vowel.with_consonant if self.consonant
+            else self.vowel.without_consonant
+        )
+        return f'{self.consonant}{vowel}{self.tone}'
+
     def generate_rhymes(self, consonants, vowels, tones):
         consonants = self._get_consonant_list(consonants)
         vowels = self._get_vowel_list(vowels)
