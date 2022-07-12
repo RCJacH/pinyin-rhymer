@@ -1,4 +1,5 @@
 import pytest
+from pinyin_rhymer.error import NotAVowelError
 
 from pinyin_rhymer.vowel import Vowel
 
@@ -237,3 +238,9 @@ def test_similar_additive(original, others):
 )
 def test_similar_subtractive(original, others):
     assert Vowel[original].similar_subtractive() == others
+
+
+def test_not_a_vowel_error():
+    with pytest.raises(NotAVowelError) as excinfo:
+        Vowel('not a vowel')
+    assert 'not a vowel' in str(excinfo.value)

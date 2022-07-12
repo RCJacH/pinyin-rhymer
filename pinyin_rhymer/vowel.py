@@ -1,4 +1,5 @@
 from enum import Enum
+from pinyin_rhymer.error import NotAVowelError
 
 from pinyin_rhymer.rhyme_scheme import VowelScheme
 
@@ -108,7 +109,10 @@ class Vowel(Enum):
     def _missing_(cls, s):
         if s in VOWEL_TRANSLATION:
             s = VOWEL_TRANSLATION[s]
-        return Vowel[s]
+        try:
+            return Vowel[s]
+        except KeyError:
+            raise NotAVowelError(s)
 
     @property
     def with_consonant(self):
