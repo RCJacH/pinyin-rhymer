@@ -32,6 +32,11 @@ def test_get(consonant_cases):
     assert Consonant.get(x) == family[x]
 
 
+def test_get_existing(consonant_cases):
+    family, x = consonant_cases.values
+    name = getattr(family, x)
+    assert Consonant.get(name) == name
+
 def test_zhchsh_translation():
     assert Consonant.get('Z') == Consonant.get('zh')
     assert Consonant.get('S') == Consonant.get('sh')

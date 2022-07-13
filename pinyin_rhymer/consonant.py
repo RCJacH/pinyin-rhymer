@@ -45,7 +45,7 @@ class Consonant(Enum):
         except KeyError:
             # allowing each consonant to be written as a single alphabet
             translated = (
-                name.replace('Z', 'zh').replace('C', 'ch').replace('S', 'sh')
+                str(name).replace('Z', 'zh').replace('C', 'ch').replace('S', 'sh')
             )
             for family in cls:
                 if translated in family.__members__:
