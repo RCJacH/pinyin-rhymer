@@ -121,10 +121,12 @@ class PinYin(object):
         )
         return f'{self.consonant}{vowel}'
 
-    def generate_rhymes(self, consonants, vowels, tones):
+    def generate_rhymes(
+        self, consonants='ALL', vowels='TRADITIONAL', tones=None
+    ):
         consonants = self._get_consonant_list(consonants)
         vowels = self._get_vowel_list(vowels)
-        tones = self._get_tone_list(tones)
+        tones = tones and self._get_tone_list(tones) or (self.tone,)
         for consonant in consonants:
             for vowel in vowels:
                 for tone in tones:
