@@ -69,7 +69,7 @@ def pinyin_case(request):
 def test_parse(pinyin_case):
     case = pinyin_case
     pinyin = PinYin(case.unicode)
-    assert pinyin.consonant == Consonant.get(case.consonant)
+    assert pinyin.consonant == Consonant(case.consonant)
     assert pinyin.vowel.name == case.vowel
     assert pinyin.vowel.spell == case.spell
     assert pinyin.vowel.medial == case.medial
@@ -129,10 +129,20 @@ def test_equal(pinyin_case):
         })
     ]
 )
-def test_rhyme(pinyin, consonants, vowels, tones, expect):
+def test_generate_rhymes(pinyin, consonants, vowels, tones, expect):
     pinyin = PinYin(pinyin)
     result = set(map(str, pinyin.generate_rhymes(consonants, vowels, tones)))
     assert result == expect
+
+
+@pytest.mark.parametrize(
+    'this, other, options', [
+        ('a4', 'ba4', [])
+    ]
+)
+def test_rhymes_with(this, other, options):
+    pinyin = PinYin(this)
+    assert pinyin.rhymes_with(other, *options)
 
 
 def test_not_a_pinyin_error():

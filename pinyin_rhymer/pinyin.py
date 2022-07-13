@@ -62,7 +62,7 @@ class PinYin(object):
         consonant = in_str
         if not vowel:
             consonant, vowel, tone = self._parse(in_str)
-        self.consonant = Consonant.get(consonant)
+        self.consonant = Consonant(consonant)
         self.vowel = Vowel(vowel)
         self.tone = int(tone)
 
@@ -121,6 +121,23 @@ class PinYin(object):
         )
         return f'{self.consonant}{vowel}'
 
+    def rhymes_with(
+        self,
+        other,
+        consonant_scheme='ALL',
+        vowel_scheme='TRADITIONAL',
+        tone='SAME'
+    ):
+        other = PinYin(other)
+        rhyme_consonant = (
+            other.consonant in self._get_consonant_list(consonant_scheme)
+        )
+        rhyme_vowel = (
+            other.vowel in self._get_vowel_list(vowel_scheme)
+        )
+        rhyme_tone = tone != 'SAME' or other.tone == self.tone
+        return rhyme_consonant and rhyme_vowel and rhyme_tone
+
     def generate_rhymes(
         self, consonants='ALL', vowels='TRADITIONAL', tones=None
     ):
@@ -139,7 +156,7 @@ class PinYin(object):
             consonants = ConsonantScheme(consonants)
         except NotARhymeSchemeError:
             # 'bpmf'
-            return (Consonant.get(x) for x in consonants)
+            return (Consonant(x) for x in consonants)
         except TypeError:
             # ('b', 'p', 'm', 'f') or ('FAMILY', 'b', 'p', 'm', 'f')
             return itertools.chain.from_iterable(
@@ -148,9 +165,9 @@ class PinYin(object):
         else:
             match consonants:
                 case ConsonantScheme.ALL:
-                    return Consonant.all_as_str()
+                    return Consonant.all()
                 case ConsonantScheme.FAMILY:
-                    return self.consonant.family()
+                    return self.consonant.all_family()
 
     def _get_vowel_list(self, vowels):
         try:

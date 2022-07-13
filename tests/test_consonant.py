@@ -1,14 +1,14 @@
 import pytest
 
-from pinyin_rhymer.consonant import Consonant
+from pinyin_rhymer.consonant import Consonant, ConsonantFamily
 from pinyin_rhymer.error import NotAConsonantError
 
 CONSONANT_FAMILIES = {
-    'Plosive': 'p t k b d g'.split(),
-    'Fricative': 'f x h s sh'.split(),
-    'Affricate': 'j q z zh c ch'.split(),
-    'Lateral': 'l r'.split(),
-    'Nasal': 'm n'.split()
+    'Plosives': 'p t k b d g'.split(),
+    'Fricatives': 'f x h s sh'.split(),
+    'Affricates': 'j q z zh c ch'.split(),
+    'Laterals': 'l r'.split(),
+    'Nasals': 'm n'.split()
 }
 
 
@@ -19,28 +19,25 @@ CONSONANT_FAMILIES = {
 )
 def consonant_cases(request):
     family, x = request.param
-    return pytest.param(Consonant[family], x)
+    return family, x
 
 
-def test_hasattr(consonant_cases):
-    family, x = consonant_cases.values
-    assert hasattr(family, x)
+def test_empty():
+    assert str(Consonant.Empty) == ''
+    assert Consonant('') == ''
 
 
 def test_get(consonant_cases):
-    family, x = consonant_cases.values
-    assert Consonant.get(x) == family[x]
+    family, x = consonant_cases
+    assert Consonant(x) == x
+    assert Consonant(x).family == ConsonantFamily(family)
 
 
-def test_get_existing(consonant_cases):
-    family, x = consonant_cases.values
-    name = getattr(family, x)
-    assert Consonant.get(name) == name
-
-def test_zhchsh_translation():
-    assert Consonant.get('Z') == Consonant.get('zh')
-    assert Consonant.get('S') == Consonant.get('sh')
-    assert Consonant.get('C') == Consonant.get('ch')
+@pytest.mark.parametrize(
+    'this, other', [('Z', 'zh'), ('S', 'sh'), ('C', 'ch')]
+)
+def test_zhchsh_translation(this, other):
+    assert Consonant(this) == Consonant(other)
 
 
 def test_all():
@@ -48,12 +45,13 @@ def test_all():
         x for family in CONSONANT_FAMILIES.values() for x in family
     }
     all_consonants.add('')
-    result = Consonant.all()
-    assert {str(x) for x in result} == all_consonants
-    assert len(result) == 22
+    assert {str(x) for x in Consonant.all()} == all_consonants
+    assert Consonant.all_as_str() == all_consonants
+    assert len(Consonant.all()) == 22
+    assert len(Consonant.all()) == 22
 
 
 def test_not_a_consonant_error():
     with pytest.raises(NotAConsonantError) as excinfo:
-        Consonant.get('not a consonant')
+        Consonant('not a consonant')
     assert 'not a consonant' in str(excinfo.value)

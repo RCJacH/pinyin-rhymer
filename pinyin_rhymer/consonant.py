@@ -1,63 +1,95 @@
-from enum import Enum
+from enum import Enum, auto
 
 from pinyin_rhymer.error import NotAConsonantError
 
 
-class Misc(Enum):
-    NO_CONSONANT = ('',)
-
-    def __new__(cls, spell):
-        value = len(cls.__members__) + 1
-        obj = object.__new__(cls)
-        obj._value_ = value
-        obj.spell = spell
-        return obj
-
-    def __str__(self):
-        return self.spell
-
-
 class ConsonantFamily(Enum):
+    Plosives = auto()
+    Affricates = auto()
+    Fricatives = auto()
+    Laterals = auto()
+    Nasals = auto()
+    Others = auto()
+
     def __str__(self):
         return self.name
 
-    def family(self):
-        cls = self.__class__
-        return cls._member_map_
+    @classmethod
+    def _missing_(cls, name):
+        return cls[name]
 
 
 class Consonant(Enum):
-    Plosive = ('Plosive', 'b d g p t k')
-    Affricate = ('Affricate', 'z zh j c ch q')
-    Fricative = ('Fricative', 'f x s sh h')
-    Lateral = ('Lateral', 'l r')
-    Nasal = ('Nasal', 'm n')
+    b = 'Plosives'
+    d = 'Plosives'
+    g = 'Plosives'
+    p = 'Plosives'
+    t = 'Plosives'
+    k = 'Plosives'
+    z = 'Affricates'
+    zh = 'Affricates'
+    j = 'Affricates'
+    c = 'Affricates'
+    ch = 'Affricates'
+    q = 'Affricates'
+    f = 'Fricatives'
+    x = 'Fricatives'
+    s = 'Fricatives'
+    sh = 'Fricatives'
+    h = 'Fricatives'
+    l = 'Laterals'
+    r = 'Laterals'
+    m = 'Nasals'
+    n = 'Nasals'
+    Empty = 'Others'
 
-    def __new__(cls, name, value, *args):
-        return Enum(name, value, type=ConsonantFamily)
+    def __new__(cls, family):
+        count = len(cls.__members__)
+        obj = object.__new__(cls)
+        obj._value_ = count
+        obj.family = ConsonantFamily(family)
+        return obj
+
+    def __repr__(self):
+        return f'<{self.__class__.__name__}.{self.family}.{self.name}>'
+
+    def __hash__(self):
+        return hash((self.family, self.name))
+
+    def __str__(self):
+        return '' if self.name == 'Empty' else self.name
+
+    def __eq__(self, other):
+        return str(self) == str(other)
 
     @classmethod
-    def get(cls, name):
+    def _missing_(cls, name):
+        if isinstance(name, cls):
+            return name
         if not name:
-            return Misc.NO_CONSONANT
+            return Consonant.Empty
         try:
-            return cls[name]
-        except KeyError:
-            # allowing each consonant to be written as a single alphabet
+            return getattr(cls, name)
+        except AttributeError:
+            pass
+
+        try:
             translated = (
-                str(name).replace('Z', 'zh').replace('C', 'ch').replace('S', 'sh')
+                name.replace('Z', 'zh').replace('C', 'ch').replace('S', 'sh')
             )
-            for family in cls:
-                if translated in family.__members__:
-                    return family._member_map_[translated]
-        raise NotAConsonantError(name)
+            return cls[translated]
+        except KeyError:
+            raise NotAConsonantError(name)
 
     @classmethod
     def all(cls):
-        all = {x for family in cls for x in family}
-        all.add(Misc.NO_CONSONANT)
-        return all
+        return set(cls)
 
     @classmethod
     def all_as_str(cls):
-        return {str(x) for x in cls.all()}
+        return set(map(str, cls))
+
+    def all_family(self):
+        return {
+            x for x in self.__class__ if x.family == self.family
+        }
