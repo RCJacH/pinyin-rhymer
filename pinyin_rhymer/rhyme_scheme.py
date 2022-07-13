@@ -1,10 +1,16 @@
 from enum import Enum, auto
 
+from pinyin_rhymer.error import NotARhymeSchemeError
+
 
 class SchemeMethods(Enum):
     @classmethod
     def _missing_(cls, name):
-        return cls(cls.__members__[name])
+        try:
+            name = cls.__members__[name]
+        except KeyError:
+            raise NotARhymeSchemeError(name, cls.name)
+        return cls(name)
 
 
 class ConsonantScheme(SchemeMethods):

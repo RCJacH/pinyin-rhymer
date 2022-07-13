@@ -3,7 +3,7 @@ import re
 
 from pinyin_rhymer.consonant import Consonant
 from pinyin_rhymer.data.pinyin_list import PINYIN_LIST
-from pinyin_rhymer.error import NotAPinYinError
+from pinyin_rhymer.error import NotAPinYinError, NotARhymeSchemeError
 from pinyin_rhymer.rhyme_scheme import ConsonantScheme, VowelScheme
 from pinyin_rhymer.vowel import Vowel
 
@@ -135,7 +135,7 @@ class PinYin(object):
     def _get_consonant_list(self, consonants):
         try:
             consonants = ConsonantScheme(consonants)
-        except ValueError:
+        except NotARhymeSchemeError:
             # 'bpmf'
             return (Consonant.get(x) for x in consonants)
         except TypeError:
@@ -153,7 +153,7 @@ class PinYin(object):
     def _get_vowel_list(self, vowels):
         try:
             vowels = VowelScheme(vowels)
-        except ValueError:
+        except NotARhymeSchemeError:
             return (Vowel(x) for x in re.split(r'[\s\t,]+', vowels))
         except TypeError:
             return itertools.chain.from_iterable(
