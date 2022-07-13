@@ -9,7 +9,7 @@ class SchemeMethods(Enum):
         try:
             name = cls.__members__[name]
         except KeyError:
-            raise NotARhymeSchemeError(name, cls.name)
+            raise NotARhymeSchemeError(name, cls)
         return cls(name)
 
 

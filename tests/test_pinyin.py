@@ -120,6 +120,12 @@ def test_equal(pinyin_case):
             'te5',
             'ze5',
             'zhe5',
+        }),
+        ('shei2', 'fSs', 'TRADITIONAL', '2', {
+            'shei2',
+            'fei2',
+            'sui2',
+            'shui2'
         })
     ]
 )
