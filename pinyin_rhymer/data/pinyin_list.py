@@ -5,5 +5,6 @@ pinyin_file = Path(__file__).parent / 'pinyinList.csv'
 
 csv_file = open(pinyin_file, 'r', encoding='utf-8')
 reader = csv.DictReader(csv_file)
-PINYIN_LIST = {x['pinyin'] for x in reader}
+PINYIN_ZI_DICT = {x['pinyin']: x['zi'] for x in reader}
+PINYIN_LIST = PINYIN_ZI_DICT.keys()
 csv_file.close()

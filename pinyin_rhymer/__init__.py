@@ -1,5 +1,6 @@
 __version__ = '0.1.0'
 
+from pinyin_rhymer.data.pinyin_list import PINYIN_LIST, PINYIN_ZI_DICT
 from pinyin_rhymer.pinyin import PinYin
 
 
