@@ -78,6 +78,12 @@ def test_parse(pinyin_case):
     assert pinyin.tone == case.tone
 
 
+def test_parse_alternative():
+    pinyin = PinYin('a4')
+    other = PinYin(pinyin)
+    assert pinyin == other
+
+
 def test_with_tone_mark(pinyin_case):
     case = pinyin_case
     pinyin = PinYin(case.name)

@@ -59,6 +59,11 @@ def reverse_transform_vowel(consonant, vowel):
 
 class PinYin(object):
     def __init__(self, in_str, vowel=None, tone=1):
+        if isinstance(in_str, PinYin):
+            self.consonant = in_str.consonant
+            self.vowel = in_str.vowel
+            self.tone = in_str.tone
+            return
         consonant = in_str
         if not vowel:
             consonant, vowel, tone = self._parse(in_str)
