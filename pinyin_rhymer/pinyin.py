@@ -14,7 +14,7 @@ ZHCHSHR = ('zh', 'ch', 'sh', 'r')
 BPMF = 'bpmf'
 JQX = 'jqx'
 RE_PINYIN = re.compile(
-    fr'^([{"".join(Consonant.all_as_str())}]*)([eaiouvngwy]+)(\d)?$'
+    fr'^([{"".join(Consonant.all_as_str())}]*)([eaiouvngwy]+r?)(\d)?$'
 )
 
 
