@@ -43,7 +43,8 @@ def transform_vowel(consonant, vowel):
             if consonant in BPMF:
                 return 'uo'
     if consonant and consonant in JQX:
-        return vowel.replace('u', 'v')
+        if vowel != 'iu':
+            return vowel.replace('u', 'v')
     return vowel
 
 
