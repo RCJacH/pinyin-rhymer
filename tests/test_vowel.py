@@ -16,6 +16,7 @@ from pinyin_rhymer.vowel import Vowel
         ('an', 'an'),
         ('eng', 'eng'),
         ('ang', 'ang'),
+        ('ong', 'ong'),
         ('er', 'er'),
         ('z', 'z'),
         ('r', 'r'),
@@ -158,17 +159,27 @@ def test_similar_traditional(original, others):
         ('a', {Vowel.a}),
         ('ei', {Vowel.ei}),
         ('ai', {Vowel.ai}),
-        ('ou', {Vowel.ou, Vowel.ao}),
-        ('ao', {Vowel.ao, Vowel.ou}),
+        ('ou', {Vowel.ou}),
+        ('ao', {Vowel.ao}),
         ('en', {Vowel.en}),
         ('an', {Vowel.an}),
-        ('eng', {Vowel.eng}),
+        ('eng', {Vowel.eng, Vowel.ong}),
         ('ang', {Vowel.ang}),
-        ('you', {Vowel.you, Vowel.yao}),
+        ('you', {Vowel.you}),
     ]
 )
 def test_similar_sounding(original, others):
     assert Vowel[original].similar_sounding() == others
+
+
+@pytest.mark.parametrize(
+    'original, threshold, others', [
+        ('ao', 0.4, {Vowel.ao, Vowel.ou}),
+        ('u', 0.4, {Vowel.wu, Vowel.r, Vowel.er})
+    ]
+)
+def test_similar_sounding_with_threshold(original, threshold, others):
+    assert Vowel(original).similar_sounding(threshold=threshold) == others
 
 
 @pytest.mark.parametrize(

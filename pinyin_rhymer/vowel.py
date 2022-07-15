@@ -40,7 +40,7 @@ class Monophthong(Enum):
     e = (0.4, 0.6)
     ɤ = (0.5, 0.8)
     o = (0.6, 0.8)
-    a = (0.8, 0.64)
+    a = (0.9, 0.64)
 
     def __init__(self, openness, backness):
         self.openness = openness
@@ -68,6 +68,7 @@ class Vowel(Enum):
     an = ('an', '', 'a', 'n')
     eng = ('eng', '', 'e', 'ng')
     ang = ('ang', '', 'a', 'ng')
+    ong = ('ong', '', 'o', 'ng')
     er = ('er', '', 'ɚ', '')
     yi = ('i', '', 'i', '')
     z = ('i', '', 'z', '')
@@ -144,10 +145,10 @@ class Vowel(Enum):
             )
         )}
 
-    def similar_sounding(self):
+    def similar_sounding(self, *args, **kwargs):
         cls = self.__class__
         monophthong = Monophthong(self.nucleus)
-        similar = {x.name for x in monophthong.similar()}
+        similar = {x.name for x in monophthong.similar(*args, **kwargs)}
         return {x for x in cls if (
             x.medial == self.medial and
             x.nucleus in similar and

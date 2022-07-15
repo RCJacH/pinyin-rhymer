@@ -28,6 +28,7 @@ class PinyinCase(Enum):
     shi4 = ('shì', 'sh', 'r', 'i', '', 'r', '', 4)
     rou3 = ('rǒu', 'r', 'ou', 'ou', '', 'o', 'u', 3)
     zan4 = ('zàn', 'z', 'an', 'an', '', 'a', 'n', 4)
+    zong4 = ('zòng', 'z', 'ong', 'ong', '', 'o', 'ng', 4)
     ci2 = ('cí', 'c', 'z', 'i', '', 'z', '', 2)
     suo1 = ('suō', 's', 'wo', 'uo', 'u', 'o', '', 1)
     wu2 = ('wú', '', 'wu', 'u', '', 'u', '', 2)
