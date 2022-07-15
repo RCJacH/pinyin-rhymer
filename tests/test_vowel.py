@@ -43,7 +43,8 @@ from pinyin_rhymer.vowel import Vowel
         ('v', 'yu'),
         ('ve', 'yue'),
         ('vn', 'yun'),
-        ('van', 'yuan')
+        ('van', 'yuan'),
+        ('', 'Empty')
     ]
 )
 def test_parse(pinyin, name):
@@ -77,7 +78,8 @@ def test_parse(pinyin, name):
         ('yu', 'v'),
         ('yue', 've'),
         ('yun', 'vn'),
-        ('yuan', 'van')
+        ('yuan', 'van'),
+        ('Empty', '')
     ]
 )
 def test_with_consonant(name, pinyin):
@@ -111,7 +113,8 @@ def test_with_consonant(name, pinyin):
         ('yu', 'yu'),
         ('yue', 'yue'),
         ('yun', 'yun'),
-        ('yuan', 'yuan')
+        ('yuan', 'yuan'),
+        ('Empty', '')
     ]
 )
 def test_without_consonant(name, pinyin):

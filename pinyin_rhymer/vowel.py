@@ -95,6 +95,7 @@ class Vowel(Enum):
     yue = ('ve', 'v', 'e', '')
     yun = ('vn', '', 'v', 'n')
     yuan = ('van', 'v', 'a', 'n')
+    Empty = ('', '', '', '')
 
     def __new__(cls, spell, medial, nucleus, coda, *args):
         value = len(cls.__members__) + 1
@@ -108,6 +109,8 @@ class Vowel(Enum):
 
     @classmethod
     def _missing_(cls, s):
+        if not s:
+            return Vowel.Empty
         if s in VOWEL_TRANSLATION:
             s = VOWEL_TRANSLATION[s]
         try:
@@ -121,7 +124,11 @@ class Vowel(Enum):
 
     @property
     def without_consonant(self):
-        return 'yi' if self.spell == 'i' else self.name
+        return (
+            'yi' if self.spell == 'i' else
+            '' if self.name == 'Empty' else
+            self.name
+        )
 
     def rhyme(self, rhymescheme, *args):
         if not isinstance(rhymescheme, VowelScheme):
@@ -181,7 +188,7 @@ class Vowel(Enum):
 
     def similar_subtractive(self):
         cls = self.__class__
-        return {x for x in cls if (
+        return {x for x in cls if x is not Vowel.Empty and (
             x == self or
             (
                 x.nucleus == self.nucleus and
