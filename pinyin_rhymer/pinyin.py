@@ -14,7 +14,7 @@ ZHCHSHR = ('zh', 'ch', 'sh', 'r')
 BPMF = 'bpmf'
 JQX = 'jqx'
 _re_consonant = f'(?P<consonant>{"|".join(Consonant.all_as_str())})?'
-_re_vowel = r'(?P<vowel>(?:er|[eaiouvwy]+(?:n|ng)?))?'
+_re_vowel = r'(?P<vowel>(?:er|[eaiouvüwy]+(?:n|ng)?))?'
 _re_tone = r'(?P<tone>\d)?'
 RE_PINYIN = re.compile(f'^{_re_consonant}{_re_vowel}{_re_tone}$')
 
@@ -30,7 +30,7 @@ def convert_unicode_to_alnum(pinyin):
             tone = i // 6 + 1
             pinyin = f'{pinyin.replace(c, REPLACE[vowel*5])}{tone}'
             break
-    return pinyin
+    return pinyin.replace('ü', 'v')
 
 
 def transform_vowel(consonant, vowel):

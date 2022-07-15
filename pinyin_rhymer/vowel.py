@@ -23,6 +23,7 @@ VOWEL_TRANSLATION = {
     'uan': 'wan',
     'un': 'wen',
     'uang': 'wang',
+    'ue': 'yue',
     'v': 'yu',
     've': 'yue',
     'vn': 'yun',
@@ -92,7 +93,7 @@ class Vowel(Enum):
     weng = ('weng', 'u', 'e', 'ng')
     wang = ('uang', 'u', 'a', 'ng')
     yu = ('v', '', 'v', '')
-    yue = ('ve', 'v', 'e', '')
+    yue = ('ue', 'v', 'e', '')
     yun = ('vn', '', 'v', 'n')
     yuan = ('van', 'v', 'a', 'n')
     Empty = ('', '', '', '')

@@ -76,7 +76,7 @@ def test_parse(pinyin, name):
         ('weng', 'weng'),
         ('wang', 'uang'),
         ('yu', 'v'),
-        ('yue', 've'),
+        ('yue', 'ue'),
         ('yun', 'vn'),
         ('yuan', 'van'),
         ('Empty', '')
