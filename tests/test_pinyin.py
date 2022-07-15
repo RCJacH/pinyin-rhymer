@@ -154,7 +154,14 @@ def test_rhymes_with(this, other, options):
     assert pinyin.rhymes_with(other, *options)
 
 
-def test_not_a_pinyin_error():
+@pytest.mark.parametrize(
+    'input', [
+        'not a pinyin',
+        'wah3',
+        'bar',
+    ]
+)
+def test_not_a_pinyin_error(input):
     with pytest.raises(NotAPinYinError) as excinfo:
-        PinYin('not a pinyin')
-    assert 'not a pinyin' in str(excinfo.value)
+        PinYin(input)
+    assert input in str(excinfo.value)

@@ -13,9 +13,10 @@ ZCS = 'zcs'
 ZHCHSHR = ('zh', 'ch', 'sh', 'r')
 BPMF = 'bpmf'
 JQX = 'jqx'
-RE_PINYIN = re.compile(
-    fr'^([{"".join(Consonant.all_as_str())}]*)([eaiouvngwy]+r?)(\d)?$'
-)
+_re_consonant = f'(?P<consonant>{"|".join(Consonant.all_as_str())})?'
+_re_vowel = r'(?P<vowel>(?:er|[eaiouvwy]+(?:n|ng)?))?'
+_re_tone = r'(?P<tone>\d)?'
+RE_PINYIN = re.compile(f'^{_re_consonant}{_re_vowel}{_re_tone}$')
 
 
 def convert_unicode_to_alnum(pinyin):
@@ -79,10 +80,10 @@ class PinYin(object):
         if not groups:
             raise NotAPinYinError(pinyin)
 
-        consonant = groups.group(1)
-        vowel = groups.group(2)
+        consonant = groups.group('consonant')
+        vowel = groups.group('vowel')
         vowel = transform_vowel(consonant, vowel)
-        tone = groups.group(3) or 5
+        tone = groups.group('tone') or 5
 
         return consonant, vowel, tone
 
