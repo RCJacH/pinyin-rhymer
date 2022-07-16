@@ -35,6 +35,18 @@ def _chk_same_family(this, other, family):
     return all(x in family for x in (this, other))
 
 
+def _chk_add_sub(this, other):
+    return (
+        this.medial in other.medial and
+        len(other.medial) - len(this.medial) == 1 and
+        other.coda == this.coda
+    ) or (
+        this.coda in other.coda and
+        len(other.coda) - len(this.coda) == 1 and
+        other.medial == this.medial
+    )
+
+
 class Monophthong(Enum):
     z = (0, 0.3)
     v = (0.1, 0.2)
@@ -193,20 +205,7 @@ class Vowel(Enum):
         return {x for x in cls if (
             x == self or
             (
-                x.nucleus == self.nucleus and
-                (
-                    (
-                        self.medial in x.medial and
-                        len(x.medial) - len(self.medial) == 1 and
-                        x.coda == self.coda
-                    )
-                    or
-                    (
-                        self.coda in x.coda and
-                        len(x.coda) - len(self.coda) == 1 and
-                        x.medial == self.medial
-                    )
-                )
+                x.nucleus == self.nucleus and _chk_add_sub(self, x)
             ) or (
                 x.medial == self.nucleus and not x.coda
             )
@@ -217,20 +216,7 @@ class Vowel(Enum):
         return {x for x in cls if x is not Vowel.Empty and (
             x == self or
             (
-                x.nucleus == self.nucleus and
-                (
-                    (
-                        x.medial in self.medial and
-                        len(self.medial) - len(x.medial) == 1 and
-                        x.coda == self.coda
-                    )
-                    or
-                    (
-                        x.coda in self.coda and
-                        len(self.coda) - len(x.coda) == 1 and
-                        x.medial == self.medial
-                    )
-                )
+                x.nucleus == self.nucleus and _chk_add_sub(x, self)
             ) or (
                 not self.coda and
                 self.medial == x.nucleus and

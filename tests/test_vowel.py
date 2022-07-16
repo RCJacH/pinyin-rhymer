@@ -154,7 +154,7 @@ def test_without_consonant(name, pinyin):
     ]
 )
 def test_similar_traditional(original, others):
-    assert Vowel[original].similar_traditional() == others
+    assert Vowel(original).rhyme('TRADITIONAL') == others
 
 
 @pytest.mark.parametrize(
