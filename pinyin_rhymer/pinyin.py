@@ -135,7 +135,7 @@ class PinYin(object):
         self,
         other,
         consonant_scheme='ALL',
-        vowel_scheme='TRADITIONAL',
+        vowel_scheme=VowelScheme.SIMILAR_SOUNDING,
         tone='SAME'
     ):
         other = PinYin(other)
@@ -149,7 +149,10 @@ class PinYin(object):
         return rhyme_consonant and rhyme_vowel and rhyme_tone
 
     def generate_rhymes(
-        self, consonants='ALL', vowels='TRADITIONAL', tones=None
+        self,
+        consonants='ALL',
+        vowels=VowelScheme.SIMILAR_SOUNDING,
+        tones=None
     ):
         consonants = self._get_consonant_list(consonants)
         vowels = self._get_vowel_list(vowels)
@@ -189,15 +192,7 @@ class PinYin(object):
                 self._get_vowel_list(x) for x in vowels
             )
         else:
-            match vowels:
-                case VowelScheme.TRADITIONAL:
-                    return self.vowel.similar_traditional()
-                case VowelScheme.SIMILAR_SOUNDING:
-                    return self.vowel.similar_sounding()
-                case VowelScheme.ADDTIIVE:
-                    return self.vowel.similar_additive()
-                case VowelScheme.SUBTRACTIVE:
-                    return self.vowel.similar_subtractive()
+            return self.vowel.rhyme(vowels)
 
     def _get_tone_list(self, tones):
         if tones == 'ALL':
