@@ -1,6 +1,6 @@
 from enum import Enum
-from pinyin_rhymer.error import NotAVowelError
 
+from pinyin_rhymer.error import NotAVowelError
 from pinyin_rhymer.rhyme_scheme import VowelScheme
 
 VOWEL_TRANSLATION = {
@@ -38,7 +38,8 @@ class Monophthong(Enum):
     i = (0.2, 0.1)
     r = (0.22, 0.7)
     ɚ = (0.4, 0.9)
-    e = (0.4, 0.6)
+    e = (0.4, 0.5)
+    ə = (0.5, 0.55)
     ɤ = (0.5, 0.8)
     o = (0.6, 0.8)
     a = (0.9, 0.64)
@@ -65,9 +66,9 @@ class Vowel(Enum):
     ai = ('ai', '', 'a', 'i')
     ou = ('ou', '', 'o', 'u')
     ao = ('ao', '', 'a', 'u')
-    en = ('en', '', 'e', 'n')
+    en = ('en', '', 'ə', 'n')
     an = ('an', '', 'a', 'n')
-    eng = ('eng', '', 'e', 'ng')
+    eng = ('eng', '', 'ə', 'ng')
     ang = ('ang', '', 'a', 'ng')
     ong = ('ong', '', 'o', 'ng')
     er = ('er', '', 'ɚ', '')
