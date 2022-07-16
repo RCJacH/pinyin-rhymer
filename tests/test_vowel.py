@@ -49,7 +49,7 @@ from pinyin_rhymer.vowel import Vowel
 )
 def test_parse(pinyin, name):
     assert Vowel(pinyin) == Vowel[name]
-
+    assert eval(repr(Vowel(pinyin))) == Vowel(pinyin)
 
 @pytest.mark.parametrize(
     'name, pinyin', [
