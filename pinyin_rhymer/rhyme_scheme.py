@@ -24,5 +24,5 @@ class VowelScheme(SchemeMethods):
     TRADITIONAL = auto()
     FOURTEEN_RHYMES = auto()
     SIMILAR_SOUNDING = auto()
-    ADDTIIVE = auto()
+    ADDITIVE = auto()
     SUBTRACTIVE = auto()

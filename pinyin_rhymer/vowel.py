@@ -139,22 +139,22 @@ class Vowel(Enum):
             self.name
         )
 
-    def rhyme(self, rhymescheme, *args):
+    def rhyme(self, rhymescheme, *args, **kwargs):
         if not isinstance(rhymescheme, VowelScheme):
             rhymescheme = VowelScheme(rhymescheme)
         match rhymescheme:
             case VowelScheme.TRADITIONAL:
-                return self.similar_traditional(*args)
+                return self.similar_traditional(*args, **kwargs)
             case VowelScheme.FOURTEEN_RHYMES:
-                return self._fourteen_rhymes(*args)
+                return self._fourteen_rhymes(*args, **kwargs)
             case VowelScheme.SIMILAR_SOUNDING:
-                return self.similar_sounding(*args)
-            case VowelScheme.ADDTIIVE:
-                return self.similar_additive(*args)
+                return self.similar_sounding(*args, **kwargs)
+            case VowelScheme.ADDITIVE:
+                return self._additive_rhymes(*args, **kwargs)
             case VowelScheme.SUBTRACTIVE:
-                return self.similar_subtractive(*args)
+                return self._subtractive_rhymes(*args, **kwargs)
 
-    def similar_traditional(self):
+    def similar_traditional(self, *args, **kwargs):
         cls = self.__class__
         return {x for x in cls if (
             x.nucleus == self.nucleus and (
@@ -188,7 +188,7 @@ class Vowel(Enum):
             x.coda == self.coda
         )}
 
-    def similar_additive(self):
+    def _additive_rhymes(self, *args, **kwargs):
         cls = self.__class__
         return {x for x in cls if (
             x == self or
@@ -212,7 +212,7 @@ class Vowel(Enum):
             )
         )}
 
-    def similar_subtractive(self):
+    def _subtractive_rhymes(self, *args, **kwargs):
         cls = self.__class__
         return {x for x in cls if x is not Vowel.Empty and (
             x == self or

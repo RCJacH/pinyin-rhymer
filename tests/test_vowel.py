@@ -246,7 +246,7 @@ def test_similar_sounding_with_threshold(original, threshold, others):
     ]
 )
 def test_similar_additive(original, others):
-    assert Vowel[original].similar_additive() == others
+    assert Vowel(original).rhyme('ADDITIVE') == others
 
 
 @pytest.mark.parametrize(
@@ -280,7 +280,7 @@ def test_similar_additive(original, others):
     ]
 )
 def test_similar_subtractive(original, others):
-    assert Vowel[original].similar_subtractive() == others
+    assert Vowel(original).rhyme('SUBTRACTIVE') == others
 
 
 def test_not_a_vowel_error():
