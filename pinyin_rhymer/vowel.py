@@ -109,7 +109,7 @@ class Vowel(Enum):
         return obj
 
     def __repr__(self):
-        return f'{self.__class__.__name__}["{self.name}"]'
+        return f'{self.__class__.__name__}.{self.name}'
 
     @classmethod
     def _missing_(cls, s):
