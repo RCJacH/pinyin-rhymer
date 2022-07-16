@@ -1,6 +1,6 @@
 import pytest
-from pinyin_rhymer.error import NotAVowelError
 
+from pinyin_rhymer.error import NotAVowelError
 from pinyin_rhymer.vowel import Vowel
 
 
@@ -50,6 +50,7 @@ from pinyin_rhymer.vowel import Vowel
 def test_parse(pinyin, name):
     assert Vowel(pinyin) == Vowel[name]
     assert eval(repr(Vowel(pinyin))) == Vowel(pinyin)
+
 
 @pytest.mark.parametrize(
     'name, pinyin', [
@@ -154,6 +155,34 @@ def test_without_consonant(name, pinyin):
 )
 def test_similar_traditional(original, others):
     assert Vowel[original].similar_traditional() == others
+
+
+@pytest.mark.parametrize(
+    'families', [
+        pytest.param({Vowel.a, Vowel.ya, Vowel.wa}, id='1.a'),
+        pytest.param({Vowel.e, Vowel.wo}, id='2.wo'),
+        pytest.param({Vowel.ye, Vowel.yue}, id='3.ie'),
+        pytest.param({Vowel.ai, Vowel.wai}, id='4.ai'),
+        pytest.param({Vowel.ei, Vowel.wei}, id='5.ei'),
+        pytest.param({Vowel.ao, Vowel.yao}, id='6.ao'),
+        pytest.param({Vowel.ou, Vowel.you}, id='7.ou'),
+        pytest.param({Vowel.an, Vowel.yan, Vowel.wan, Vowel.yuan}, id='8.an'),
+        pytest.param(
+            {Vowel.en, Vowel.yin, Vowel.wen, Vowel.yun}, id='9.en|in|un|vn'
+        ),
+        pytest.param({Vowel.ang, Vowel.yang, Vowel.wang}, id='10.ang'),
+        pytest.param(
+            {Vowel.eng, Vowel.ying, Vowel.ong, Vowel.yong, Vowel.weng},
+            id='11.eng|ing|ong'
+        ),
+        pytest.param({Vowel.yi, Vowel.yu, Vowel.er}, id='12.i|v|er'),
+        pytest.param({Vowel.r, Vowel.z}, id='13.z|r'),
+        pytest.param({Vowel.wu}, id='14.u')
+    ]
+)
+def test_similar_fourteen_rhymes(families):
+    for each_vowel in families:
+        assert each_vowel.rhyme('FOURTEEN_RHYMES') == families
 
 
 @pytest.mark.parametrize(

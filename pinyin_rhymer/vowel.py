@@ -31,6 +31,10 @@ VOWEL_TRANSLATION = {
 }
 
 
+def _chk_same_family(this, other, family):
+    return all(x in family for x in (this, other))
+
+
 class Monophthong(Enum):
     z = (0, 0.3)
     v = (0.1, 0.2)
@@ -89,9 +93,9 @@ class Vowel(Enum):
     wa = ('ua', 'u', 'a', '')
     wei = ('ui', 'u', 'e', 'i')
     wai = ('uai', 'u', 'a', 'i')
-    wen = ('un', 'u', 'e', 'n')
+    wen = ('un', 'u', 'ə', 'n')
     wan = ('uan', 'u', 'a', 'n')
-    weng = ('weng', 'u', 'e', 'ng')
+    weng = ('weng', 'u', 'ə', 'ng')
     wang = ('uang', 'u', 'a', 'ng')
     yu = ('v', '', 'v', '')
     yue = ('ue', 'v', 'e', '')
@@ -141,6 +145,8 @@ class Vowel(Enum):
         match rhymescheme:
             case VowelScheme.TRADITIONAL:
                 return self.similar_traditional(*args)
+            case VowelScheme.FOURTEEN_RHYMES:
+                return self._fourteen_rhymes(*args)
             case VowelScheme.SIMILAR_SOUNDING:
                 return self.similar_sounding(*args)
             case VowelScheme.ADDTIIVE:
@@ -154,6 +160,21 @@ class Vowel(Enum):
             x.nucleus == self.nucleus and (
                 self.coda in ('n', 'ng') and x.coda in ('n', 'ng') or
                 x.coda == self.coda
+            )
+        )}
+
+    def _fourteen_rhymes(self, *args, **kwargs):
+        cls = self.__class__
+        return {x for x in cls if x.coda == self.coda and (
+            not x.coda and (
+                _chk_same_family(self, x, (Vowel.z, Vowel.r)) or
+                _chk_same_family(self, x, (Vowel.e, Vowel.wo)) or
+                _chk_same_family(self, x, (Vowel.yi, Vowel.yu, Vowel.er))
+            ) or (
+                x.nucleus == self.nucleus or (
+                    'n' in x.coda and
+                    _chk_same_family(self.nucleus, x.nucleus, 'əiuov')
+                )
             )
         )}
 

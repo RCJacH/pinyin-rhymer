@@ -6,6 +6,8 @@ from pinyin_rhymer.error import NotARhymeSchemeError
 class SchemeMethods(Enum):
     @classmethod
     def _missing_(cls, name):
+        if isinstance(name, cls):
+            return name
         try:
             name = cls.__members__[name]
         except KeyError:
@@ -20,6 +22,7 @@ class ConsonantScheme(SchemeMethods):
 
 class VowelScheme(SchemeMethods):
     TRADITIONAL = auto()
+    FOURTEEN_RHYMES = auto()
     SIMILAR_SOUNDING = auto()
     ADDTIIVE = auto()
     SUBTRACTIVE = auto()

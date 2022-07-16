@@ -12,7 +12,7 @@ class PinyinCase(Enum):
     bo3 = ('bǒ', 'b', 'wo', 'uo', 'u', 'o', '', 3)
     pu1 = ('pū', 'p', 'wu', 'u', '', 'u', '', 1)
     ming3 = ('mǐng', 'm', 'ying', 'ing', '', 'i', 'ng', 3)
-    fen2 = ('fén', 'f', 'en', 'en', '', 'e', 'n', 2)
+    fen2 = ('fén', 'f', 'en', 'en', '', 'ə', 'n', 2)
     dai4 = ('dài', 'd', 'ai', 'ai', '', 'a', 'i', 4)
     tu1 = ('tū', 't', 'wu', 'u', '', 'u', '', 1)
     nv3 = ('nǚ', 'n', 'yu', 'v', '', 'v', '', 3)
