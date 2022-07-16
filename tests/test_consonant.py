@@ -31,6 +31,7 @@ def test_get(consonant_cases):
     family, x = consonant_cases
     assert Consonant(x) == x
     assert Consonant(x).family == ConsonantFamily(family)
+    assert eval(repr(Consonant(x))) == Consonant(x)
 
 
 @pytest.mark.parametrize(
