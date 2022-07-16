@@ -79,6 +79,7 @@ def test_parse(pinyin_case):
     assert pinyin.vowel.nucleus == case.nucleus
     assert pinyin.vowel.coda == case.coda
     assert pinyin.tone == case.tone
+    assert eval(repr(pinyin)) == pinyin
 
 
 def test_parse_alternative():

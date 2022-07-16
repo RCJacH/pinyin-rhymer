@@ -87,6 +87,9 @@ class PinYin(object):
 
         return consonant, vowel, tone
 
+    def __repr__(self):
+        return f'{self.__class__.__name__}("{str(self)}")'
+
     @property
     def spell_vowel(self):
         consonant = str(self.consonant)
