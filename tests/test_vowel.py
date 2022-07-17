@@ -216,6 +216,27 @@ def test_similar_sounding_with_threshold(original, threshold, others):
 
 @pytest.mark.parametrize(
     'original, others', [
+        (Vowel.a, {Vowel.a, Vowel.wa, Vowel.ya}),
+        (Vowel.ai, {Vowel.ai, Vowel.wai, Vowel.ya}),
+        (Vowel.ou, {
+            Vowel.e,
+            Vowel.wo,
+            Vowel.ou,
+            Vowel.you,
+            Vowel.yong,
+            Vowel.ong,
+        }),
+        (Vowel.en, {
+            Vowel.en, Vowel.wen, Vowel.ye, Vowel.yue, Vowel.wei
+        }),
+    ]
+)
+def test_similar_multiphthong(original, others):
+    assert original.rhyme('SIMILAR_MULTIPHTHONG') == others
+
+
+@pytest.mark.parametrize(
+    'original, others', [
         ('e', {Vowel.e}),
         ('a', {
             Vowel.a,

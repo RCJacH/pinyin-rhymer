@@ -47,7 +47,13 @@ def _chk_add_sub(this, other):
     )
 
 
+def _weighted_average(values, weights):
+    return sum(v * d for (v, d) in zip(values, weights)) / sum(weights)
+
+
 class Monophthong(Enum):
+    n = (-0.3, 0.5)
+    ng = (0.2, 1)
     z = (0, 0.3)
     v = (0.1, 0.2)
     u = (0.1, 0.9)
@@ -57,8 +63,8 @@ class Monophthong(Enum):
     e = (0.4, 0.5)
     ə = (0.5, 0.55)
     ɤ = (0.5, 0.8)
-    o = (0.6, 0.8)
-    a = (0.9, 0.64)
+    o = (0.7, 0.8)
+    a = (0.95, 0.64)
 
     def __init__(self, openness, backness):
         self.openness = openness
@@ -73,6 +79,38 @@ class Monophthong(Enum):
             (abs(name.backness - self.backness) < threshold) and
             (abs(name.openness - self.openness) < threshold)
         )}
+
+
+class Multiphthong(object):
+    @classmethod
+    def calculate_average(cls, vowel):
+        if vowel == Vowel.Empty:
+            return (-1, -1, -1)
+
+        body = Monophthong(vowel.nucleus)
+        try:
+            head = Monophthong(vowel.medial)
+        except KeyError:
+            head = body
+
+        try:
+            tail = Monophthong(vowel.coda)
+        except KeyError:
+            tail = body
+
+        openness = _weighted_average(
+            list(x.openness for x in (head, body, tail)), (1, 8, 2.5)
+        )
+        backness = _weighted_average(
+            list(x.backness for x in (head, body, tail)), (1, 8, 2.5)
+        )
+        return (openness, backness)
+
+    @classmethod
+    def compare_average(cls, this, other, threshold=0.1):
+        return all(
+            abs(x - y) < threshold for (x, y) in zip(this, other)
+        )
 
 
 class Vowel(Enum):
@@ -160,7 +198,9 @@ class Vowel(Enum):
             case VowelScheme.FOURTEEN_RHYMES:
                 return self._fourteen_rhymes(*args, **kwargs)
             case VowelScheme.SIMILAR_SOUNDING:
-                return self.similar_sounding(*args, **kwargs)
+                return self._similar_main_monophthong(*args, **kwargs)
+            case VowelScheme.SIMILAR_MULTIPHTHONG:
+                return self._similar_multiphthong(*args, **kwargs)
             case VowelScheme.ADDITIVE:
                 return self._additive_rhymes(*args, **kwargs)
             case VowelScheme.SUBTRACTIVE:
@@ -189,6 +229,27 @@ class Vowel(Enum):
                 )
             )
         )}
+
+    def _similar_main_monophthong(self, *args, **kwargs):
+        cls = self.__class__
+        monophthong = Monophthong(self.nucleus)
+        similar = {x.name for x in monophthong.similar(*args, **kwargs)}
+        return {x for x in cls if (
+            x.medial == self.medial and
+            x.nucleus in similar and
+            x.coda == self.coda
+        )}
+
+    def _similar_multiphthong(self, *args, **kwargs):
+        cls = self.__class__
+        this = Multiphthong.calculate_average(self)
+        return {
+            x for x in cls if (
+                Multiphthong.compare_average(
+                    this, Multiphthong.calculate_average(x)
+                )
+            )
+        }
 
     def similar_sounding(self, *args, **kwargs):
         cls = self.__class__
