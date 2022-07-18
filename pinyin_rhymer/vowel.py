@@ -125,13 +125,13 @@ class MouthMovement(Enum):
     OPEN_BACK = (1, 1)
 
     @staticmethod
-    def cmp(a, b, threshold=0.15):
+    def cmp(a, b, threshold):
         return ((a - b) > threshold) - ((b - a) > threshold)
 
     @classmethod
-    def get_movement(cls, source, target):
-        openness = cls.cmp(target.openness, source.openness)
-        backness = cls.cmp(target.backness, source.backness)
+    def get_movement(cls, source, target, threshold=0.15):
+        openness = cls.cmp(target.openness, source.openness, threshold)
+        backness = cls.cmp(target.backness, source.backness, threshold)
         return MouthMovement((openness, backness))
 
     @classmethod
@@ -238,6 +238,10 @@ class Vowel(Enum):
                 return self.similar_traditional(*args, **kwargs)
             case VowelScheme.FOURTEEN_RHYMES:
                 return self._fourteen_rhymes(*args, **kwargs)
+            case VowelScheme.SIMILAR_BODY:
+                return self._similar_nucleus(*args, **kwargs)
+            case VowelScheme.SIMILAR_TAIL:
+                return self._similar_coda(*args, **kwargs)
             case VowelScheme.SIMILAR_SOUNDING:
                 return self._similar_main_monophthong(*args, **kwargs)
             case VowelScheme.SIMILAR_MULTIPHTHONG:
@@ -272,6 +276,26 @@ class Vowel(Enum):
                 )
             )
         )}
+
+    def _similar_nucleus(self, *args, **kwargs):
+        if self == Vowel.Empty:
+            return {}
+        threshold = 0.1 + kwargs.get('more', 0) * 0.1
+        body = Monophthong(self.nucleus)
+        similar = {x.name for x in body.similar(threshold=threshold)}
+        return {x for x in Vowel if x.nucleus in similar}
+
+    def _similar_coda(self, *args, **kwargs):
+        if self == Vowel.Empty:
+            return {}
+        threshold = 0.1 + kwargs.get('more', 0) * 0.1
+        tail = Monophthong(self.coda or self.nucleus)
+        similar = {x.name for x in tail.similar(threshold=threshold)}
+        return {
+            x for x in Vowel if (
+                x.coda in similar if x.coda else x.nucleus in similar
+            )
+        }
 
     def _similar_main_monophthong(self, *args, **kwargs):
         cls = self.__class__

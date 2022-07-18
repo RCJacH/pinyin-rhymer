@@ -23,6 +23,8 @@ class ConsonantScheme(SchemeMethods):
 class VowelScheme(SchemeMethods):
     TRADITIONAL = auto()
     FOURTEEN_RHYMES = auto()
+    SIMILAR_BODY = auto()
+    SIMILAR_TAIL = auto()
     SIMILAR_SOUNDING = auto()
     SIMILAR_MONOPHTHONG = auto()
     SIMILAR_MULTIPHTHONG = auto()

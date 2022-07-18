@@ -187,6 +187,91 @@ def test_similar_fourteen_rhymes(families):
 
 @pytest.mark.parametrize(
     'original, others', [
+        ('e', {Vowel.e, Vowel.er}),
+        ('a', {
+            Vowel.a,
+            Vowel.ya,
+            Vowel.wa,
+            Vowel.ai,
+            Vowel.wai,
+            Vowel.ao,
+            Vowel.yao,
+            Vowel.ang,
+            Vowel.yang,
+            Vowel.wang,
+            Vowel.an,
+            Vowel.yan,
+            Vowel.wan,
+            Vowel.yuan
+        }),
+        ('ei', {
+            Vowel.ei,
+            Vowel.wei,
+            Vowel.en,
+            Vowel.wen,
+            Vowel.eng,
+            Vowel.weng,
+            Vowel.ye,
+            Vowel.yue
+        }),
+        ('ou', {
+            Vowel.ou, Vowel.you, Vowel.ong, Vowel.yong, Vowel.wo
+        }),
+        ('u', {
+            Vowel.wu
+        })
+    ]
+)
+def test_similar_body(original, others):
+    assert Vowel(original).rhyme('SIMILAR_BODY') == others
+
+
+@pytest.mark.parametrize(
+    'original, others', [
+        ('e', {Vowel.e, Vowel.er}),
+        ('a', {Vowel.a, Vowel.ya, Vowel.wa}),
+        ('ai', {Vowel.ai, Vowel.wai, Vowel.yi, Vowel.ei, Vowel.wei}),
+        ('ou', {
+            Vowel.ou,
+            Vowel.ao,
+            Vowel.yao,
+            Vowel.you,
+            Vowel.wu
+        }),
+        ('an', {
+            Vowel.an,
+            Vowel.yan,
+            Vowel.wan,
+            Vowel.yuan,
+            Vowel.en,
+            Vowel.wen,
+            Vowel.yin,
+            Vowel.yun
+        }),
+        ('ang', {
+            Vowel.ang,
+            Vowel.yang,
+            Vowel.wang,
+            Vowel.eng,
+            Vowel.weng,
+            Vowel.ying,
+            Vowel.ong,
+            Vowel.yong
+        }),
+        (
+            'ye', {
+                Vowel.ye,
+                Vowel.yue
+            }
+        )
+    ]
+)
+def test_similar_tail(original, others):
+    assert Vowel(original).rhyme('SIMILAR_TAIL') == others
+
+
+@pytest.mark.parametrize(
+    'original, others', [
         ('e', {Vowel.e, Vowel.r, Vowel.er}),
         ('a', {Vowel.a}),
         ('ei', {Vowel.ei}),
