@@ -113,6 +113,47 @@ class Multiphthong(object):
         )
 
 
+class MouthMovement(Enum):
+    NO_MOVEMENT = (0, 0)
+    FRONT = (0, -1)
+    BACK = (0, 1)
+    CLOSE = (-1, 0)
+    OPEN = (1, 0)
+    CLOSE_FRONT = (-1, -1)
+    CLOSE_BACK = (-1, 1)
+    OPEN_FRONT = (1, -1)
+    OPEN_BACK = (1, 1)
+
+    @staticmethod
+    def cmp(a, b, threshold=0.15):
+        return ((a - b) > threshold) - ((b - a) > threshold)
+
+    @classmethod
+    def get_movement(cls, source, target):
+        openness = cls.cmp(target.openness, source.openness)
+        backness = cls.cmp(target.backness, source.backness)
+        return MouthMovement((openness, backness))
+
+    @classmethod
+    def calculate(cls, vowel):
+        if vowel == Vowel.Empty:
+            return (None, None)
+        try:
+            source = Monophthong(vowel.nucleus)
+        except KeyError:
+            return MouthMovement.NO_MOVEMENT
+
+        try:
+            target = Monophthong(vowel.coda)
+        except KeyError:
+            if not vowel.medial:
+                return MouthMovement.NO_MOVEMENT
+            target = source
+            source = Monophthong(vowel.medial)
+
+        return cls.get_movement(source, target)
+
+
 class Vowel(Enum):
     e = ('e', '', 'ɤ', '')
     a = ('a', '', 'a', '')
@@ -201,6 +242,8 @@ class Vowel(Enum):
                 return self._similar_main_monophthong(*args, **kwargs)
             case VowelScheme.SIMILAR_MULTIPHTHONG:
                 return self._similar_multiphthong(*args, **kwargs)
+            case VowelScheme.SIMILAR_MOUTH_MOVEMENT:
+                return self._similar_mouth_movement(*args, **kwargs)
             case VowelScheme.ADDITIVE:
                 return self._additive_rhymes(*args, **kwargs)
             case VowelScheme.SUBTRACTIVE:
@@ -249,6 +292,14 @@ class Vowel(Enum):
                     this, Multiphthong.calculate_average(x)
                 )
             )
+        }
+
+    def _similar_mouth_movement(self, *args, **kwargs):
+        self_movement = MouthMovement.calculate(self)
+        return {
+            x for x in Vowel
+            if x is not Vowel.Empty
+            and MouthMovement.calculate(x) == self_movement
         }
 
     def similar_sounding(self, *args, **kwargs):

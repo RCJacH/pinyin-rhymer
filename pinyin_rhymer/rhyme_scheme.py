@@ -26,5 +26,6 @@ class VowelScheme(SchemeMethods):
     SIMILAR_SOUNDING = auto()
     SIMILAR_MONOPHTHONG = auto()
     SIMILAR_MULTIPHTHONG = auto()
+    SIMILAR_MOUTH_MOVEMENT = auto()
     ADDITIVE = auto()
     SUBTRACTIVE = auto()

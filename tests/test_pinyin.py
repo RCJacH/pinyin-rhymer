@@ -19,7 +19,7 @@ class PinyinCase(Enum):
     liu2 = ('liú', 'l', 'you', 'iu', 'i', 'o', 'u', 2)
     gang4 = ('gàng', 'g', 'ang', 'ang', '', 'a', 'ng', 4)
     ke3 = ('kě', 'k', 'e', 'e', '', 'ɤ', '', 3)
-    hui2 = ('huí', 'h', 'wei', 'ui', 'u', 'e', 'i', 2)
+    hui2 = ('huí', 'h', 'wei', 'ui', 'u', 'ə', 'i', 2)
     jue1 = ('juē', 'j', 'yue', 'ue', 'v', 'e', '', 1)
     jiu3 = ('jiǔ', 'j', 'you', 'iu', 'i', 'o', 'u', 3)
     qu4 = ('qù', 'q', 'yu', 'v', '', 'v', '', 4)

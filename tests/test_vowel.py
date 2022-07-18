@@ -236,6 +236,54 @@ def test_similar_multiphthong(original, others):
 
 
 @pytest.mark.parametrize(
+    'families', [
+        {
+            Vowel.a,
+            Vowel.e,
+            Vowel.er,
+            Vowel.yi,
+            Vowel.z,
+            Vowel.r,
+            Vowel.wu,
+            Vowel.yu
+        },
+        {
+            Vowel.ei,
+            Vowel.ai,
+            Vowel.wei,
+            Vowel.wai
+        },
+        {
+            Vowel.an,
+            Vowel.en,
+            Vowel.yan,
+            Vowel.wan,
+            Vowel.wen,
+            Vowel.yuan,
+            Vowel.ou,
+            Vowel.you
+        },
+        {
+            Vowel.ang,
+            Vowel.yang,
+            Vowel.yin,
+            Vowel.yao,
+            Vowel.weng,
+            Vowel.wang,
+            Vowel.ong,
+            Vowel.yun,
+            Vowel.ao,
+            Vowel.eng,
+            Vowel.yong,
+        }
+    ]
+)
+def test_similar_mouth_movement(families):
+    for vowel in families:
+        assert vowel.rhyme('SIMILAR_MOUTH_MOVEMENT') == families
+
+
+@pytest.mark.parametrize(
     'original, others', [
         ('e', {Vowel.e}),
         ('a', {
