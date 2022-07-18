@@ -231,6 +231,8 @@ class Vowel(Enum):
         )
 
     def rhyme(self, rhymescheme, *args, **kwargs):
+        if self == Vowel.Empty:
+            return {}
         if not isinstance(rhymescheme, VowelScheme):
             rhymescheme = VowelScheme(rhymescheme)
         match rhymescheme:
@@ -278,16 +280,12 @@ class Vowel(Enum):
         )}
 
     def _similar_nucleus(self, *args, **kwargs):
-        if self == Vowel.Empty:
-            return {}
         threshold = 0.1 + kwargs.get('more', 0) * 0.1
         body = Monophthong(self.nucleus)
         similar = {x.name for x in body.similar(threshold=threshold)}
         return {x for x in Vowel if x.nucleus in similar}
 
     def _similar_coda(self, *args, **kwargs):
-        if self == Vowel.Empty:
-            return {}
         threshold = 0.1 + kwargs.get('more', 0) * 0.1
         tail = Monophthong(self.coda or self.nucleus)
         similar = {x.name for x in tail.similar(threshold=threshold)}
@@ -322,7 +320,6 @@ class Vowel(Enum):
         self_movement = MouthMovement.calculate(self)
         return {
             x for x in Vowel
-            if x is not Vowel.Empty
             and MouthMovement.calculate(x) == self_movement
         }
 
@@ -349,7 +346,7 @@ class Vowel(Enum):
 
     def _subtractive_rhymes(self, *args, **kwargs):
         cls = self.__class__
-        return {x for x in cls if x is not Vowel.Empty and (
+        return {x for x in cls if (
             x == self or
             (
                 x.nucleus == self.nucleus and _chk_add_sub(x, self)
