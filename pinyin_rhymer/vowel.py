@@ -76,12 +76,7 @@ class Monophthong(Enum):
         return cls[name]
 
     def similar(self, threshold):
-        return {name for name in self.__class__ if (
-            math.hypot(
-                abs(name.backness - self.backness),
-                abs(name.openness - self.openness)
-            ) < threshold
-        )}
+        return Monophthong.similar_to(self.value, threshold)
 
     @classmethod
     def similar_to(cls, value, threshold):
