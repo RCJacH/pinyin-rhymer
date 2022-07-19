@@ -102,25 +102,16 @@ def test_equal(pinyin_case):
 
 @pytest.mark.parametrize(
     'pinyin, consonants, vowels, tones, expect', [
-        ('shuang1', 'FAMILY', 'TRADITIONAL', '1', {
-            'fan1',
+        ('shuang1', 'FAMILY', 'FOURTEEN_RHYMES', '1', {
             'fang1',
-            'han1',
             'hang1',
-            'huan1',
             'huang1',
-            'san1',
             'sang1',
-            'shan1',
             'shang1',
-            'shuan1',
             'shuang1',
-            'suan1',
-            'xian1',
             'xiang1',
-            'xuan1',
         }),
-        ('zhe5', 'ALL', 'TRADITIONAL', '5', {
+        ('zhe5', 'ALL', 'SIMILAR_BODY', '5', {
             'e5',
             'de5',
             'ke5',
@@ -131,7 +122,7 @@ def test_equal(pinyin_case):
             'ze5',
             'zhe5',
         }),
-        ('shei2', 'fSs', 'TRADITIONAL', '2', {
+        ('shei2', 'fSs', 'FOURTEEN_RHYMES', '2', {
             'shei2',
             'fei2',
             'sui2',

@@ -268,8 +268,6 @@ class Vowel(Enum):
         if not isinstance(rhymescheme, VowelScheme):
             rhymescheme = VowelScheme(rhymescheme)
         match rhymescheme:
-            case VowelScheme.TRADITIONAL:
-                return self.similar_traditional(*args, **kwargs)
             case VowelScheme.FOURTEEN_RHYMES:
                 return self._fourteen_rhymes(*args, **kwargs)
             case VowelScheme.SIMILAR_BODY:
@@ -286,15 +284,6 @@ class Vowel(Enum):
                 return self._additive_rhymes(*args, **kwargs)
             case VowelScheme.SUBTRACTIVE:
                 return self._subtractive_rhymes(*args, **kwargs)
-
-    def similar_traditional(self, *args, **kwargs):
-        cls = self.__class__
-        return {x for x in cls if (
-            x.nucleus == self.nucleus and (
-                self.coda in ('n', 'ng') and x.coda in ('n', 'ng') or
-                x.coda == self.coda
-            )
-        )}
 
     def _fourteen_rhymes(self, *args, **kwargs):
         cls = self.__class__

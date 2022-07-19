@@ -123,41 +123,6 @@ def test_without_consonant(name, pinyin):
 
 
 @pytest.mark.parametrize(
-    'original, others', [
-        ('e', {Vowel.e}),
-        ('a', {Vowel.a, Vowel.ya, Vowel.wa}),
-        ('ei', {Vowel.ei, Vowel.wei}),
-        ('ai', {Vowel.ai, Vowel.wai}),
-        ('ou', {Vowel.ou, Vowel.you}),
-        ('ao', {Vowel.ao, Vowel.yao}),
-        ('en', {Vowel.en, Vowel.wen, Vowel.eng, Vowel.weng}),
-        ('an', {
-            Vowel.an,
-            Vowel.yan,
-            Vowel.wan,
-            Vowel.yuan,
-            Vowel.ang,
-            Vowel.yang,
-            Vowel.wang
-        }),
-        ('eng', {Vowel.eng, Vowel.weng, Vowel.en, Vowel.wen}),
-        ('ang', {
-            Vowel.ang,
-            Vowel.yang,
-            Vowel.wang,
-            Vowel.an,
-            Vowel.yan,
-            Vowel.wan,
-            Vowel.yuan
-        }),
-        ('ye', {Vowel.ye, Vowel.yue}),
-    ]
-)
-def test_similar_traditional(original, others):
-    assert Vowel(original).rhyme('TRADITIONAL') == others
-
-
-@pytest.mark.parametrize(
     'families', [
         pytest.param({Vowel.a, Vowel.ya, Vowel.wa}, id='1.a'),
         pytest.param({Vowel.e, Vowel.wo}, id='2.wo'),
