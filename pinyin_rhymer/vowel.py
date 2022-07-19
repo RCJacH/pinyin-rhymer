@@ -167,7 +167,7 @@ class MouthMovement(Enum):
         return MouthMovement((openness, backness))
 
     @classmethod
-    def calculate(cls, vowel):
+    def calculate(cls, vowel, threshold):
         if vowel == Vowel.Empty:
             return (None, None)
         try:
@@ -183,7 +183,7 @@ class MouthMovement(Enum):
             target = source
             source = Monophthong(vowel.medial)
 
-        return cls.get_movement(source, target)
+        return cls.get_movement(source, target, threshold)
 
 
 class Vowel(Enum):
@@ -335,10 +335,11 @@ class Vowel(Enum):
         )}
 
     def _similar_mouth_movement(self, *args, **kwargs):
-        self_movement = MouthMovement.calculate(self)
+        threshold = 0.15 + kwargs.get('more', 0) * 0.15
+        self_movement = MouthMovement.calculate(self, threshold=threshold)
         return {
             x for x in Vowel if
-            MouthMovement.calculate(x) == self_movement
+            MouthMovement.calculate(x, threshold=threshold) == self_movement
         }
 
     def similar_sounding(self, *args, **kwargs):
