@@ -230,6 +230,31 @@ def test_similar_tail(original, others):
 
 
 @pytest.mark.parametrize(
+    'original, others', [
+        ('e', {Vowel.e}),
+        ('a', {Vowel.a, Vowel.ya, Vowel.wa}),
+        ('ei', {Vowel.ei, Vowel.wei}),
+        ('ai', {Vowel.ai, Vowel.wai}),
+        ('ou', {Vowel.ou, Vowel.you}),
+        ('ao', {Vowel.ao, Vowel.yao}),
+        ('en', {Vowel.en, Vowel.wen}),
+        ('an', {Vowel.an, Vowel.yan, Vowel.wan, Vowel.yuan}),
+        ('eng', {Vowel.eng, Vowel.weng}),
+        ('ang', {Vowel.ang, Vowel.yang, Vowel.wang}),
+        ('ong', {Vowel.ong, Vowel.yong}),
+        ('er', {Vowel.er}),
+        ('yi', {Vowel.yi, Vowel.yu}),
+        ('z', {Vowel.z}),
+        ('r', {Vowel.r}),
+        ('ye', {Vowel.ye, Vowel.yue}),
+        ('yin', {Vowel.yin, Vowel.yun}),
+    ]
+)
+def test_similar_sounding(original, others):
+    assert Vowel(original).rhyme('SIMILAR_SOUNDING') == others
+
+
+@pytest.mark.parametrize(
     'families', [
         {
             Vowel.a,

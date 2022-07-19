@@ -56,7 +56,7 @@ class Monophthong(Enum):
     n = (-0.1, 0.5)
     ng = (0.2, 1)
     z = (0, 0.3)
-    v = (0.1, 0.2)
+    v = (0.12, 0.18)
     u = (0.1, 0.9)
     i = (0.2, 0.1)
     r = (0.22, 0.7)
@@ -275,7 +275,7 @@ class Vowel(Enum):
             case VowelScheme.SIMILAR_TAIL:
                 return self._similar_coda(*args, **kwargs)
             case VowelScheme.SIMILAR_SOUNDING:
-                return self._similar_main_monophthong(*args, **kwargs)
+                return self._similar_sounding(*args, **kwargs)
             case VowelScheme.SIMILAR_MULTIPHTHONG:
                 return self._similar_multiphthong(*args, **kwargs)
             case VowelScheme.SIMILAR_MOUTH_MOVEMENT:
@@ -324,15 +324,11 @@ class Vowel(Enum):
             )
         }
 
-    def _similar_main_monophthong(self, *args, **kwargs):
-        cls = self.__class__
-        monophthong = Monophthong(self.nucleus)
-        similar = {x.name for x in monophthong.similar(*args, **kwargs)}
-        return {x for x in cls if (
-            x.medial == self.medial and
-            x.nucleus in similar and
-            x.coda == self.coda
-        )}
+    def _similar_sounding(self, *args, **kwargs):
+        more = kwargs.get('more', 0)
+        body_rhymes = self._similar_nucleus(*args, more=more+0.25, **kwargs)
+        tail_rhymes = self._similar_coda(*args, more=more+0.25, **kwargs)
+        return body_rhymes.intersection(tail_rhymes)
 
     def _similar_mouth_movement(self, *args, **kwargs):
         threshold = 0.15 + kwargs.get('more', 0) * 0.15
@@ -341,16 +337,6 @@ class Vowel(Enum):
             x for x in Vowel if
             MouthMovement.calculate(x, threshold=threshold) == self_movement
         }
-
-    def similar_sounding(self, *args, **kwargs):
-        cls = self.__class__
-        monophthong = Monophthong(self.nucleus)
-        similar = {x.name for x in monophthong.similar(*args, **kwargs)}
-        return {x for x in cls if x is not Vowel.Empty and (
-            x.medial == self.medial and
-            x.nucleus in similar and
-            x.coda == self.coda
-        )}
 
     def _additive_rhymes(self, *args, **kwargs):
         cls = self.__class__
