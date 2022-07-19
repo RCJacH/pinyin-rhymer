@@ -48,10 +48,6 @@ def _chk_add_sub(this, other):
     )
 
 
-def _weighted_average(values, weights):
-    return sum(v * d for (v, d) in zip(values, weights)) / sum(weights)
-
-
 class Monophthong(Enum):
     n = (-0.1, 0.5)
     ng = (0.2, 1)
@@ -106,30 +102,6 @@ class Multiphthong(object):
         )
         backness = cls._weighted_average(
             list(x.backness for x in (body, tail)), ratios
-        )
-        return (openness, backness)
-
-    @classmethod
-    def calculate_average(cls, vowel):
-        if vowel == Vowel.Empty:
-            return (-1, -1, -1)
-
-        body = Monophthong(vowel.nucleus)
-        try:
-            head = Monophthong(vowel.medial)
-        except KeyError:
-            head = body
-
-        try:
-            tail = Monophthong(vowel.coda)
-        except KeyError:
-            tail = body
-
-        openness = _weighted_average(
-            list(x.openness for x in (head, body, tail)), (1, 8, 2.5)
-        )
-        backness = _weighted_average(
-            list(x.backness for x in (head, body, tail)), (1, 8, 2.5)
         )
         return (openness, backness)
 
