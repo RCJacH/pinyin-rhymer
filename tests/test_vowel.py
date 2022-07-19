@@ -199,18 +199,12 @@ def test_similar_fourteen_rhymes(families):
             Vowel.ang,
             Vowel.yang,
             Vowel.wang,
-            Vowel.an,
-            Vowel.yan,
-            Vowel.wan,
-            Vowel.yuan
         }),
         ('ei', {
             Vowel.ei,
             Vowel.wei,
             Vowel.en,
             Vowel.wen,
-            Vowel.eng,
-            Vowel.weng,
             Vowel.ye,
             Vowel.yue
         }),
@@ -228,7 +222,7 @@ def test_similar_body(original, others):
 
 @pytest.mark.parametrize(
     'original, others', [
-        ('e', {Vowel.e, Vowel.er}),
+        ('e', {Vowel.e}),
         ('a', {Vowel.a, Vowel.ya, Vowel.wa}),
         ('ai', {Vowel.ai, Vowel.wai, Vowel.yi, Vowel.ei, Vowel.wei}),
         ('ou', {
@@ -297,27 +291,6 @@ def test_similar_sounding(original, others):
 )
 def test_similar_sounding_with_threshold(original, threshold, others):
     assert Vowel(original).similar_sounding(threshold=threshold) == others
-
-
-@pytest.mark.parametrize(
-    'original, others', [
-        (Vowel.a, {Vowel.a, Vowel.wa, Vowel.ya}),
-        (Vowel.ai, {Vowel.ai, Vowel.wai, Vowel.ya}),
-        (Vowel.ou, {
-            Vowel.e,
-            Vowel.wo,
-            Vowel.ou,
-            Vowel.you,
-            Vowel.yong,
-            Vowel.ong,
-        }),
-        (Vowel.en, {
-            Vowel.en, Vowel.wen, Vowel.ye, Vowel.yue, Vowel.wei
-        }),
-    ]
-)
-def test_similar_multiphthong(original, others):
-    assert original.rhyme('SIMILAR_MULTIPHTHONG') == others
 
 
 @pytest.mark.parametrize(
