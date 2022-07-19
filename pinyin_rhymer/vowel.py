@@ -1,5 +1,5 @@
-from enum import Enum
 import math
+from enum import Enum
 
 from pinyin_rhymer.error import NotAVowelError
 from pinyin_rhymer.rhyme_scheme import VowelScheme
@@ -193,7 +193,7 @@ class Vowel(Enum):
     yuan = ('van', 'v', 'a', 'n')
     Empty = ('', '', '', '')
 
-    def __new__(cls, spell, medial, nucleus, coda, *args):
+    def __new__(cls, spell, medial, nucleus, coda):
         value = len(cls.__members__) + 1
         obj = object.__new__(cls)
         obj._value_ = value
