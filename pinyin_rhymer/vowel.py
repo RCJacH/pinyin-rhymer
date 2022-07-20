@@ -60,7 +60,7 @@ class Monophthong(Enum):
     e = (0.4, 0.5)
     ə = (0.5, 0.55)
     ɤ = (0.5, 0.8)
-    o = (0.7, 0.8)
+    o = (0.7, 0.9)
     a = (0.95, 0.64)
 
     def __init__(self, openness, backness):
@@ -292,7 +292,7 @@ class Vowel(Enum):
         }
 
     def _similar_sounding(self, *args, **kwargs):
-        more = kwargs.get('more', 0)
+        more = kwargs.pop('more', 0) * 0.75
         body_rhymes = self._similar_nucleus(*args, more=more+0.25, **kwargs)
         tail_rhymes = self._similar_coda(*args, more=more+0.25, **kwargs)
         return body_rhymes.intersection(tail_rhymes)
