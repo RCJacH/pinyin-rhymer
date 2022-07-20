@@ -5,6 +5,7 @@ import pytest
 from pinyin_rhymer.consonant import Consonant
 from pinyin_rhymer.error import NotAPinYinError
 from pinyin_rhymer.pinyin import PinYin
+from pinyin_rhymer.vowel import Vowel
 
 
 class PinyinCase(Enum):
@@ -157,3 +158,21 @@ def test_not_a_pinyin_error(input):
     with pytest.raises(NotAPinYinError) as excinfo:
         PinYin(input)
     assert input in str(excinfo.value)
+
+
+def test_valid_pinyin(pinyin_case):
+    assert PinYin(
+        pinyin_case.consonant, pinyin_case.vowel, pinyin_case.tone
+    ).is_valid
+
+
+@pytest.mark.parametrize(
+    'pinyin_parts', [
+        (Consonant.b, Vowel.r, 4),
+        (Consonant.b, Vowel.yong, 3),
+        (Consonant.j, Vowel.wu, 1),
+        (Consonant.x, Vowel.wu, 2),
+    ]
+)
+def test_invalid_pinyin(pinyin_parts):
+    assert PinYin(*pinyin_parts).is_valid is False

@@ -101,6 +101,17 @@ class PinYin(object):
 
     @property
     def is_valid(self):
+        consonant = str(self.consonant)
+        match self.vowel:
+            case Vowel.r:
+                if consonant not in ZHCHSHR:
+                    return False
+            case Vowel.z:
+                if consonant not in ZCS:
+                    return False
+            case Vowel.wu:
+                if consonant in JQX:
+                    return False
         return str(self) in PINYIN_LIST
 
     def __str__(self):
