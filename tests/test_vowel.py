@@ -255,6 +255,45 @@ def test_similar_sounding(original, others):
 
 
 @pytest.mark.parametrize(
+    'original, others', [
+        ('e', {Vowel.e, Vowel.er}),
+        ('a', {Vowel.a, Vowel.ya, Vowel.wa}),
+        ('ei', {Vowel.ei, Vowel.wei}),
+        ('ai', {Vowel.ai, Vowel.wai}),
+        ('ou', {
+            Vowel.ong,
+            Vowel.yong,
+            Vowel.ou,
+            Vowel.you,
+            Vowel.eng,
+            Vowel.weng,
+        }),
+        ('ao', {Vowel.ao, Vowel.yao, Vowel.ang, Vowel.yang, Vowel.wang}),
+        ('en', {Vowel.en, Vowel.wen}),
+        ('an', {Vowel.an, Vowel.yan, Vowel.wan, Vowel.yuan}),
+        ('eng', {Vowel.eng, Vowel.weng}),
+        ('ang', {Vowel.ang, Vowel.yang, Vowel.wang, Vowel.ao, Vowel.yao}),
+        ('ong', {
+            Vowel.ong,
+            Vowel.yong,
+            Vowel.ou,
+            Vowel.you,
+            Vowel.eng,
+            Vowel.weng,
+        }),
+        ('er', {Vowel.er, Vowel.e}),
+        ('yi', {Vowel.yi, Vowel.yu}),
+        ('z', {Vowel.z, Vowel.yu}),
+        ('r', {Vowel.r}),
+        ('ye', {Vowel.ye, Vowel.yue}),
+        ('yin', {Vowel.yin, Vowel.yun}),
+    ]
+)
+def test_similar_sounding_more(original, others):
+    assert Vowel(original).rhyme('SIMILAR_SOUNDING', more=1) == others
+
+
+@pytest.mark.parametrize(
     'families', [
         {
             Vowel.a,
@@ -280,21 +319,21 @@ def test_similar_sounding(original, others):
             Vowel.wen,
             Vowel.yuan,
             Vowel.ou,
-            Vowel.you
+            Vowel.you,
+            Vowel.ong,
+            Vowel.yong
         },
         {
             Vowel.ang,
             Vowel.yang,
             Vowel.yin,
             Vowel.yao,
+            Vowel.eng,
             Vowel.weng,
             Vowel.wang,
-            Vowel.ong,
             Vowel.yun,
-            Vowel.ao,
-            Vowel.eng,
-            Vowel.yong,
-        }
+            Vowel.ao
+        },
     ]
 )
 def test_similar_mouth_movement(families):
