@@ -9,9 +9,9 @@ from pinyin_rhymer.vowel import Vowel
 
 TONES = 'āēīōūǖáéíóúǘǎěǐǒǔǚàèìòùǜ'
 REPLACE = 'aāáǎàeēéěèiīíǐìoōóǒòuūúǔùvǖǘǚǜ'
-ZCS = 'zcs'
+ZCS = ('z', 'c', 's')
 ZHCHSHR = ('zh', 'ch', 'sh', 'r')
-BPMF = 'bpmf'
+BPMF = ('b', 'p', 'm', 'f')
 JQX = ('j', 'q', 'x')
 _re_consonant = f'(?P<consonant>{"|".join(Consonant.all_as_str())})?'
 _re_vowel = r'(?P<vowel>(?:er|[eaiouvüwy]+(?:n|ng)?))?'
