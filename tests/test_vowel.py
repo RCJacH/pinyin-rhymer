@@ -248,6 +248,7 @@ def test_similar_tail(original, others):
         ('r', {Vowel.r}),
         ('ye', {Vowel.ye, Vowel.yue}),
         ('yin', {Vowel.yin, Vowel.yun}),
+        ('yun', {Vowel.yin, Vowel.yun}),
     ]
 )
 def test_similar_sounding(original, others):
