@@ -134,7 +134,7 @@ class PinYin(object):
         elif 'o' in vowel:
             replace = 'o'
         elif 'n' in vowel:
-            replace = self.vowel.nucleus
+            replace = vowel[vowel.index('n')-1]
         else:
             replace = vowel[1]
         vowel = vowel.replace(

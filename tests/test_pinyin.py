@@ -32,6 +32,7 @@ class PinyinCase(Enum):
     zan4 = ('zàn', 'z', 'an', 'an', '', 'a', 'n', 4)
     zong4 = ('zòng', 'z', 'ong', 'ong', '', 'o', 'ng', 4)
     ci2 = ('cí', 'c', 'z', 'i', '', 'z', '', 2)
+    cun1 = ('cūn', 'c', 'wen', 'un', 'u', 'ə', 'n', 1)
     suo1 = ('suō', 's', 'wo', 'uo', 'u', 'o', '', 1)
     wu2 = ('wú', '', 'wu', 'u', '', 'u', '', 2)
     wo4 = ('wò', '', 'wo', 'uo', 'u', 'o', '', 4)
