@@ -25,9 +25,13 @@ VOWEL_TRANSLATION = {
     'un': 'wen',
     'uang': 'wang',
     'ue': 'yue',
+    'yv': 'yu',
     'v': 'yu',
+    'yve': 'yue',
     've': 'yue',
+    'yvn': 'yun',
     'vn': 'yun',
+    'yvan': 'yuan',
     'van': 'yuan'
 }
 

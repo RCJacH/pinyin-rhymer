@@ -46,7 +46,7 @@ def transform_vowel(consonant, vowel):
     if consonant and consonant in JQX:
         if vowel != 'iu':
             return vowel.replace('u', 'v')
-    return vowel
+    return vowel.replace('yv', 'yu')
 
 
 def reverse_transform_vowel(consonant, vowel):
