@@ -41,6 +41,7 @@ class PinyinCase(Enum):
     yong1 = ('yōng', '', 'yong', 'iong', 'i', 'o', 'ng', 1)
     yi1 = ('yī', '', 'yi', 'i', '', 'i', '', 1)
     er3 = ('ěr', '', 'er', 'er', '', 'ɚ', '', 3)
+    ng5 = ('ng', '', 'ng', 'ng', '', '', 'ng', 5)
 
     def __new__(
         cls, unicode, consonant, vowel, spell, medial, nucleus, coda, tone

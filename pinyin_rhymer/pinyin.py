@@ -125,6 +125,9 @@ class PinYin(object):
 
     def with_tone_mark(self):
         vowel = self.spell_vowel
+        if self.tone == 5:
+            return f'{self.consonant}{vowel}'
+
         if len(vowel) == 1:
             replace = vowel
         elif 'a' in vowel:
