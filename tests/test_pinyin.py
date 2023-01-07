@@ -3,7 +3,7 @@ from enum import Enum
 import pytest
 
 from pinyin_rhymer.consonant import Consonant
-from pinyin_rhymer.error import NotAPinYinError
+from pinyin_rhymer.error import NotAPinYinError, IrregularPinYinError
 from pinyin_rhymer.pinyin import PinYin
 from pinyin_rhymer.vowel import Vowel
 
@@ -178,3 +178,14 @@ def test_valid_pinyin(pinyin_case):
 )
 def test_invalid_pinyin(pinyin_parts):
     assert PinYin(*pinyin_parts).is_valid is False
+
+
+@pytest.mark.parametrize(
+    'pinyin_str', [
+        'hm', 'hng', 'ḿ', 'm̀', 'ń', 'ńg', 'ň', 'ňg', 'ǹ', 'ǹg'
+    ]
+)
+def test_irregular_pinyin(pinyin_str):
+    with pytest.raises(IrregularPinYinError) as excinfo:
+        PinYin(pinyin_str)
+    assert pinyin_str in str(excinfo.value)

@@ -3,7 +3,9 @@ import re
 
 from pinyin_rhymer.consonant import Consonant
 from pinyin_rhymer.data.pinyin_list import PINYIN_LIST
-from pinyin_rhymer.error import NotAPinYinError, NotARhymeSchemeError
+from pinyin_rhymer.error import (
+    NotAPinYinError, IrregularPinYinError, NotARhymeSchemeError
+)
 from pinyin_rhymer.rhyme_scheme import ConsonantScheme, VowelScheme
 from pinyin_rhymer.vowel import Vowel
 
@@ -13,6 +15,7 @@ ZCS = ('z', 'c', 's')
 ZHCHSHR = ('zh', 'ch', 'sh', 'r')
 BPMF = ('b', 'p', 'm', 'f')
 JQX = ('j', 'q', 'x')
+IRREGULARS = ('hm', 'hng', 'ń', 'ň', 'ǹ', 'ńg', 'ňg', 'ǹg', 'ḿ', 'm̀')
 _re_consonant = f'(?P<consonant>{"|".join(Consonant.all_as_str())})?'
 _re_vowel = r'(?P<vowel>(?:er|[eaiouvüwy]+(?:n|ng)?))?'
 _re_tone = r'(?P<tone>\d)?'
@@ -78,7 +81,10 @@ class PinYin(object):
             pinyin = convert_unicode_to_alnum(pinyin)
         groups = RE_PINYIN.match(pinyin)
         if not groups:
-            raise NotAPinYinError(pinyin)
+            if pinyin in IRREGULARS:
+                raise IrregularPinYinError(pinyin)
+            else:
+                raise NotAPinYinError(pinyin)
 
         consonant = groups.group('consonant')
         vowel = groups.group('vowel')

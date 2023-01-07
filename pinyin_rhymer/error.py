@@ -4,6 +4,12 @@ class NotAPinYinError(Exception):
         super().__init__(message)
 
 
+class IrregularPinYinError(Exception):
+    def __init__(self, string):
+        message = f'"{string}" is an irregular pinyin, handle it manually for now.'
+        super().__init__(message)
+
+
 class NotAConsonantError(Exception):
     def __init__(self, string):
         message = f'"{string}" is not a valid consonant.'
