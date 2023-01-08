@@ -263,7 +263,9 @@ class Vowel(Enum):
         return {x for x in cls if x.coda == self.coda and (
             not x.coda and (
                 _chk_same_family(self, x, (Vowel.z, Vowel.r)) or
-                _chk_same_family(self, x, (Vowel.e, Vowel.wo)) or
+                _chk_same_family(self, x, (
+                    Vowel.e, Vowel.o, Vowel.yo, Vowel.wo
+                    )) or
                 _chk_same_family(self, x, (Vowel.yi, Vowel.yu, Vowel.er))
             ) or (
                 x.nucleus == self.nucleus or (

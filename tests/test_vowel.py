@@ -125,7 +125,7 @@ def test_without_consonant(name, pinyin):
 @pytest.mark.parametrize(
     'families', [
         pytest.param({Vowel.a, Vowel.ya, Vowel.wa}, id='1.a'),
-        pytest.param({Vowel.e, Vowel.wo}, id='2.wo'),
+        pytest.param({Vowel.e, Vowel.wo, Vowel.o, Vowel.yo}, id='2.wo'),
         pytest.param({Vowel.ye, Vowel.yue}, id='3.ie'),
         pytest.param({Vowel.ai, Vowel.wai}, id='4.ai'),
         pytest.param({Vowel.ei, Vowel.wei}, id='5.ei'),
@@ -174,7 +174,13 @@ def test_similar_fourteen_rhymes(families):
             Vowel.yue
         }),
         ('ou', {
-            Vowel.ou, Vowel.you, Vowel.ong, Vowel.yong, Vowel.wo
+            Vowel.o,
+            Vowel.ou,
+            Vowel.you,
+            Vowel.ong,
+            Vowel.yong,
+            Vowel.yo,
+            Vowel.wo
         }),
         ('u', {
             Vowel.wu
@@ -299,6 +305,7 @@ def test_similar_sounding_more(original, others):
         {
             Vowel.a,
             Vowel.e,
+            Vowel.o,
             Vowel.er,
             Vowel.yi,
             Vowel.z,
@@ -351,7 +358,7 @@ def test_similar_mouth_movement(families):
             Vowel.ao,
             Vowel.an,
             Vowel.ya,
-            Vowel.wa,
+            Vowel.wa
         }),
         ('ei', {Vowel.ei, Vowel.wei}),
         ('ai', {Vowel.ai, Vowel.wai}),
@@ -367,7 +374,7 @@ def test_similar_mouth_movement(families):
         }),
         ('eng', {Vowel.eng, Vowel.weng}),
         ('ang', {Vowel.ang, Vowel.yang, Vowel.wang}),
-        ('yi', {Vowel.yi, Vowel.ye, Vowel.ya, Vowel.yin}),
+        ('yi', {Vowel.yi, Vowel.ye, Vowel.ya, Vowel.yin, Vowel.yo}),
         ('ya', {Vowel.ya, Vowel.yao, Vowel.yan}),
         ('wu', {Vowel.wu, Vowel.wo, Vowel.wa}),
         ('yu', {Vowel.yu, Vowel.yue, Vowel.yun})
@@ -383,7 +390,7 @@ def test_similar_additive(original, others):
         ('a', {Vowel.a}),
         ('ei', {Vowel.ei}),
         ('ai', {Vowel.ai, Vowel.a}),
-        ('ou', {Vowel.ou}),
+        ('ou', {Vowel.ou, Vowel.o}),
         ('ao', {Vowel.ao, Vowel.a}),
         ('en', {Vowel.en}),
         ('an', {Vowel.an, Vowel.a}),
@@ -392,11 +399,11 @@ def test_similar_additive(original, others):
         ('yi', {Vowel.yi}),
         ('ye', {Vowel.ye, Vowel.yi}),
         ('ya', {Vowel.ya, Vowel.yi, Vowel.a}),
-        ('you', {Vowel.you, Vowel.ou}),
+        ('you', {Vowel.you, Vowel.ou, Vowel.yo}),
         ('yao', {Vowel.yao, Vowel.ya, Vowel.ao}),
         ('ying', {Vowel.ying, Vowel.yin}),
         ('yang', {Vowel.yang, Vowel.yan, Vowel.ang}),
-        ('wo', {Vowel.wo, Vowel.wu}),
+        ('wo', {Vowel.wo, Vowel.wu, Vowel.o}),
         ('wa', {Vowel.wa, Vowel.wu, Vowel.a}),
         ('wei', {Vowel.wei, Vowel.ei}),
         ('wai', {Vowel.wai, Vowel.wa, Vowel.ai}),

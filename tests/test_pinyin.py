@@ -122,7 +122,6 @@ def test_equal(pinyin_case):
             'me5',
             'ne5',
             'te5',
-            'ze5',
             'zhe5',
         }),
         ('shei2', 'fSs', 'FOURTEEN_RHYMES', '2', {
