@@ -1,7 +1,7 @@
 import csv
 from pathlib import Path
 
-pinyin_file = Path(__file__).parent / 'pinyinList.csv'
+pinyin_file = Path(__file__).parent / 'pinyin_list.csv'
 
 csv_file = open(pinyin_file, 'r', encoding='utf-8')
 reader = csv.DictReader(csv_file)

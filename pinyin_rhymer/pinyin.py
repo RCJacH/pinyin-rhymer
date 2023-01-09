@@ -118,7 +118,7 @@ class PinYin(object):
             case Vowel.wu:
                 if consonant in JQX:
                     return False
-        return str(self) in PINYIN_LIST
+        return self.with_tone_mark() in PINYIN_LIST
 
     def __str__(self):
         return f'{self.consonant}{self.spell_vowel}{self.tone}'
@@ -146,6 +146,8 @@ class PinYin(object):
             replace = vowel[vowel.index('n')-1]
         else:
             replace = vowel[1]
+        if self.consonant not in JQX:
+            vowel = vowel.replace('ue', 'üe')
         vowel = vowel.replace(
             replace, REPLACE[REPLACE.index(replace) + (self.tone % 5)]
         )
